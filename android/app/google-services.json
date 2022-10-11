@@ -1,0 +1,54 @@
+{
+  "project_info": {
+    "project_number": "1092901711600",
+    "project_id": "songvoter-9bf52",
+    "storage_bucket": "songvoter-9bf52.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1092901711600:android:72e9b32c09454b92805c35",
+        "android_client_info": {
+          "package_name": "de.coflnet.songvoter"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1092901711600-m6mi9761ncl8eu9vs010eju8cnjmah0s.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "de.coflnet.songvoter",
+            "certificate_hash": "c022ebfe80e64345a8e1973fe53ccd724b9b6613"
+          }
+        },
+        {
+          "client_id": "1092901711600-vibe0t6669jhf6am16h8mqeobgfk4puk.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAL2KAenfb2TW4hDzo0uN7aOqQAqJV47Sg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1092901711600-vibe0t6669jhf6am16h8mqeobgfk4puk.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "1092901711600-80pcjv34fo117gks5nk65pdm72vt9ur0.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "de.coflnet.songvoter"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
