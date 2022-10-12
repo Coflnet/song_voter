@@ -8,9 +8,9 @@ class GuestLoginWidget extends StatelessWidget {
   GuestLoginWidget({Key? key, required this.previousTitle}) : super(key: key);
 
   void _handleSignIn() {
-    Get.to(GuestLoginWarningWidget(
-      previousTitle: previousTitle,
-    ));
+    Get.to(() => GuestLoginWarningWidget(
+          previousTitle: previousTitle,
+        ));
   }
 
   Widget build(BuildContext context) {

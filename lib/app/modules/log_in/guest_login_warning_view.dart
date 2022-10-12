@@ -11,13 +11,13 @@ class GuestLoginWarningWidget extends StatelessWidget {
       : super(key: key);
 
   void _handleContinue() {
-    Get.to(LoginSuccessView());
+    Get.to(() => LoginSuccessView());
   }
 
   void _handleBack() {
-    Get.to(LoginWidget(
-      headline: previousTitle,
-    ));
+    Get.to(() => LoginWidget(
+          headline: previousTitle,
+        ));
   }
 
   @override

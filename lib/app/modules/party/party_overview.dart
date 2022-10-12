@@ -6,11 +6,11 @@ import 'package:song_voter/global_widgets/base.dart';
 
 class PartyOverviewWidget extends StatelessWidget {
   void _handleCreate() {
-    Get.to(PartyCreateWidget());
+    Get.to(() => PartyCreateWidget());
   }
 
   void _handleJoin() {
-    Get.to(PartyListWidget());
+    Get.to(() => PartyListWidget());
   }
 
   @override

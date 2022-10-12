@@ -26,15 +26,7 @@ class _BaseState extends State<Base> {
   }
 
   void navigate(Widget target, int targetIndex) {
-    Transition? transition;
-    if (_selectedIndex == null) {
-      transition = Transition.native;
-    } else if (targetIndex > _selectedIndex!) {
-      transition = Transition.leftToRight;
-    } else {
-      transition = Transition.rightToLeft;
-    }
-    Get.to(target, transition: transition);
+    Get.to(() => target, transition: Transition.fadeIn);
   }
 
   Widget? _bottomNavigationBar() {
@@ -66,16 +58,16 @@ class _BaseState extends State<Base> {
           }
         })
       },
-      items: [
-        const BottomNavigationBarItem(
+      items: const [
+        BottomNavigationBarItem(
           icon: Icon(Icons.home_outlined),
           label: "<value>",
         ),
-        const BottomNavigationBarItem(
+        BottomNavigationBarItem(
           icon: Icon(Icons.celebration_outlined),
           label: "<value>",
         ),
-        const BottomNavigationBarItem(
+        BottomNavigationBarItem(
           icon: Icon(Icons.play_arrow_outlined),
           label: "<value>",
         )
