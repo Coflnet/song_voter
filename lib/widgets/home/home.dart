@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:song_voter/app/modules/home/home_controller.dart';
-import 'package:song_voter/app/data/services/user_service.dart';
-import 'package:song_voter/app/modules/log_in/login_view.dart';
-import 'package:song_voter/global_widgets/base.dart';
+import 'package:song_voter/widgets/base.dart';
+import 'package:song_voter/widgets/home/home_controller.dart';
 
 class HomeView extends GetView<HomeController> {
   @override

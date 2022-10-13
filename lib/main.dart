@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:song_voter/app/data/models/user.dart';
-import 'package:song_voter/app/modules/home/home.dart';
-import 'package:song_voter/app/modules/home/home_controller.dart';
-import 'package:song_voter/app/modules/log_in/login_view.dart';
+import 'package:song_voter/ui/models/user.dart';
+import 'package:song_voter/widgets/home/home.dart';
+import 'package:song_voter/widgets/home/home_controller.dart';
+import 'package:song_voter/widgets/log_in/login_view.dart';
 
 void main() async {
   await GetStorage.init();
@@ -31,7 +31,7 @@ class MyAppState extends State<MyApp> {
     if (user != null) {
       homeWidget = HomeView();
     } else {
-      homeWidget = LoginWidget(
+      homeWidget = LoginView(
         headline: "Song Voter",
       );
     }
@@ -44,7 +44,8 @@ class MyAppState extends State<MyApp> {
         GetPage(
             name: "/home",
             page: () => HomeView(),
-            binding: BindingsBuilder(() => {Get.put(HomeController())}))
+            binding: BindingsBuilder(() => {Get.put(HomeController())})),
+        GetPage(name: "/login", page: () => LoginView(headline: "Song Voter"))
       ],
     );
   }

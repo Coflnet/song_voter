@@ -1,4 +1,4 @@
-import 'package:song_voter/app/data/models/user.dart';
+import 'package:song_voter/ui/models/user.dart';
 
 class Party {
   Party(

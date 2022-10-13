@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/route_manager.dart';
-import 'package:song_voter/app/modules/log_in/login_view.dart';
-import 'package:song_voter/app/modules/log_in/success_view.dart';
-import 'package:song_voter/global_widgets/base.dart';
+import 'package:song_voter/widgets/base.dart';
+import 'package:song_voter/widgets/log_in/login_view.dart';
+import 'package:song_voter/widgets/log_in/success_view.dart';
 
 class GuestLoginWarningWidget extends StatelessWidget {
   String previousTitle;
@@ -15,7 +15,7 @@ class GuestLoginWarningWidget extends StatelessWidget {
   }
 
   void _handleBack() {
-    Get.to(() => LoginWidget(
+    Get.to(() => LoginView(
           headline: previousTitle,
         ));
   }

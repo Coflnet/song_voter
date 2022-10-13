@@ -1,9 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/route_manager.dart';
-import 'package:song_voter/app/data/services/user_service.dart';
-import 'package:song_voter/app/modules/home/home.dart';
-import 'package:song_voter/global_widgets/base.dart';
+import 'package:song_voter/utils/services/user_service.dart';
+import 'package:song_voter/widgets/base.dart';
 
 class LoginSuccessView extends StatelessWidget {
   String _username = "";

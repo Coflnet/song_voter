@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/route_manager.dart';
-import 'package:song_voter/app/modules/home/home.dart';
-import 'package:song_voter/app/modules/party/party_overview.dart';
-import 'package:song_voter/app/modules/settings/settings.dart';
+import 'package:song_voter/widgets/party/party_overview.dart';
+import 'package:song_voter/widgets/settings/settings.dart';
 
 class Base extends StatefulWidget {
   Base({required this.child, required this.showNavbar, this.navbarIndex});

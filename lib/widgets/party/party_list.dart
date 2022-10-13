@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/route_manager.dart';
-import 'package:song_voter/app/data/models/party.dart';
-import 'package:song_voter/app/modules/party/party_detail.dart';
-import 'package:song_voter/global_widgets/base.dart';
+import 'package:song_voter/ui/models/party.dart';
+import 'package:song_voter/widgets/base.dart';
+import 'package:song_voter/widgets/party/party_detail.dart';
 
 class PartyListWidget extends StatefulWidget {
   State<StatefulWidget> createState() => _PartyListWidgetState();

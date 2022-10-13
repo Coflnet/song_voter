@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/route_manager.dart';
-import 'package:song_voter/app/modules/party/party_create.dart';
-import 'package:song_voter/app/modules/party/party_list.dart';
-import 'package:song_voter/global_widgets/base.dart';
+import 'package:song_voter/widgets/base.dart';
+import 'package:song_voter/widgets/party/party_create.dart';
+import 'package:song_voter/widgets/party/party_list.dart';
 
 class PartyOverviewWidget extends StatelessWidget {
   void _handleCreate() {

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:song_voter/app/data/models/party.dart';
-import 'package:song_voter/global_widgets/base.dart';
+import 'package:song_voter/widgets/base.dart';
 
 class PartyCreateWidget extends StatefulWidget {
   @override

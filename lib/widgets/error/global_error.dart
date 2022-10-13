@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:song_voter/global_widgets/base.dart';
+import 'package:song_voter/widgets/base.dart';
 
 class GlobalErrorWidget extends StatelessWidget {
   final String headline;

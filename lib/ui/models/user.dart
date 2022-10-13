@@ -1,5 +1,3 @@
-import 'package:song_voter/app/data/models/user.dart';
-
 class User {
   User(
       {this.id,

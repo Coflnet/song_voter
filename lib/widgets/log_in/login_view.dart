@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:song_voter/app/modules/log_in/guest_login.dart';
-import 'package:song_voter/global_widgets/base.dart';
+import 'package:song_voter/widgets/base.dart';
+import 'package:song_voter/widgets/log_in/guest_login.dart';
 
-class LoginWidget extends StatelessWidget {
+class LoginView extends StatelessWidget {
   final String headline;
   final String? subHeadline;
 
-  LoginWidget({Key? key, required this.headline, this.subHeadline})
+  LoginView({Key? key, required this.headline, this.subHeadline})
       : super(key: key);
 
   @override
