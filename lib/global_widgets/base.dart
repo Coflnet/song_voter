@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:get/route_manager.dart';
 import 'package:song_voter/app/modules/home/home.dart';
 import 'package:song_voter/app/modules/party/party_overview.dart';
@@ -47,7 +48,7 @@ class _BaseState extends State<Base> {
           _selectedIndex = index;
           switch (index) {
             case 0:
-              navigate(HomeWidget(), index);
+              Get.toNamed("/home");
               break;
             case 1:
               navigate(PartyOverviewWidget(), index);

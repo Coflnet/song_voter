@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:song_voter/app/data/controllers/home_controller.dart';
+import 'package:song_voter/app/modules/home/home_controller.dart';
 import 'package:song_voter/app/data/services/user_service.dart';
 import 'package:song_voter/app/modules/log_in/login_view.dart';
 import 'package:song_voter/global_widgets/base.dart';
 
-class HomeWidget extends GetView<HomeController> {
-  final homeController = Get.put(HomeController());
-
+class HomeView extends GetView<HomeController> {
   @override
   Widget build(BuildContext context) {
     return Base(
@@ -30,11 +28,11 @@ class HomeWidget extends GetView<HomeController> {
             ),
           ),
           Center(
-            child: Obx(() => Text("Hello ${homeController.username}")),
+            child: Obx(() => Text("Hello ${controller.username}")),
           ),
           TextButton(
               onPressed: () {
-                homeController.onLogout(context);
+                controller.onLogout(context);
               },
               child: Text("Logout"))
         ]));

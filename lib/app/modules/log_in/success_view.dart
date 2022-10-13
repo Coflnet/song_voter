@@ -12,7 +12,7 @@ class LoginSuccessView extends StatelessWidget {
   void _onContinuePress(BuildContext context) async {
     if (_username.isNotEmpty) {
       await _userService.setUsername(_username);
-      Get.to(() => HomeWidget());
+      Get.toNamed("/home");
     } else {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         content: Text("Please enter a username"),
