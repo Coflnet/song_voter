@@ -1,0 +1,6 @@
+targets:
+  $default:
+    builders:
+      swagger_dart_code_generator:
+        options:
+          input_urls: [""]

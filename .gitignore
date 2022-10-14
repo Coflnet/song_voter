@@ -32,6 +32,9 @@ migrate_working_dir/
 .pub/
 /build/
 
+#openapi
+/lib/swagger/generated
+
 # Symbolication related
 app.*.symbols
 
