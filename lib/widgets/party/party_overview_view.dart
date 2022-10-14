@@ -1,16 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:get/route_manager.dart';
-import 'package:song_voter/widgets/base.dart';
-import 'package:song_voter/widgets/party/party_create.dart';
-import 'package:song_voter/widgets/party/party_list.dart';
+import 'package:song_voter/utils/route_utils.dart';
+import 'package:song_voter/widgets/base/base.dart';
 
-class PartyOverviewWidget extends StatelessWidget {
+class PartyOverviewView extends StatelessWidget {
   void _handleCreate() {
-    Get.to(() => PartyCreateWidget());
+    Get.toNamed(Routes.partyCreate);
   }
 
   void _handleJoin() {
-    Get.to(() => PartyListWidget());
+    Get.toNamed(Routes.partyList);
   }
 
   @override
@@ -44,23 +43,22 @@ class PartyOverviewWidget extends StatelessWidget {
                 top: MediaQuery.of(context).size.height * 0.1,
               ),
               child: TextButton(
-                child: Text(
-                  "Create one",
-                  style: Theme.of(context).textTheme.headline5,
-                ),
-                onPressed: _handleCreate,
-              ),
+                  onPressed: _handleCreate,
+                  child: Text(
+                    "Create one",
+                    style: Theme.of(context).textTheme.headline5,
+                  )),
             ),
             Padding(
               padding: EdgeInsets.only(
                 top: MediaQuery.of(context).size.height * 0.05,
               ),
               child: TextButton(
+                onPressed: _handleJoin,
                 child: Text(
                   "Join one",
                   style: Theme.of(context).textTheme.headline5,
                 ),
-                onPressed: _handleJoin,
               ),
             ),
           ],

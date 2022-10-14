@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/route_manager.dart';
-import 'package:song_voter/widgets/party/party_overview.dart';
-import 'package:song_voter/widgets/settings/settings.dart';
+import 'package:song_voter/utils/route_utils.dart';
+import 'package:song_voter/widgets/party/party_overview_view.dart';
+import 'package:song_voter/widgets/settings/settings_view.dart';
 
 class Base extends StatefulWidget {
   Base({required this.child, required this.showNavbar, this.navbarIndex});
@@ -25,10 +26,6 @@ class _BaseState extends State<Base> {
     if (widget.navbarIndex != null) _selectedIndex = widget.navbarIndex;
   }
 
-  void navigate(Widget target, int targetIndex) {
-    Get.to(() => target, transition: Transition.fadeIn);
-  }
-
   Widget? _bottomNavigationBar() {
     if (!widget.showNavbar) {
       return null;
@@ -47,13 +44,13 @@ class _BaseState extends State<Base> {
           _selectedIndex = index;
           switch (index) {
             case 0:
-              Get.toNamed("/home");
+              Get.toNamed(Routes.home);
               break;
             case 1:
-              navigate(PartyOverviewWidget(), index);
+              Get.toNamed(Routes.party);
               break;
             case 2:
-              navigate(SettingsView(), index);
+              Get.toNamed(Routes.settings);
               break;
           }
         })

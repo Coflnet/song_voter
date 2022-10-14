@@ -1,23 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:get/route_manager.dart';
-import 'package:song_voter/widgets/base.dart';
-import 'package:song_voter/widgets/log_in/login_view.dart';
-import 'package:song_voter/widgets/log_in/success_view.dart';
+import 'package:song_voter/utils/route_utils.dart';
+import 'package:song_voter/widgets/base/base.dart';
 
-class GuestLoginWarningWidget extends StatelessWidget {
-  String previousTitle;
-
-  GuestLoginWarningWidget({Key? key, required this.previousTitle})
-      : super(key: key);
+class GuestLoginWarningView extends StatelessWidget {
+  GuestLoginWarningView({Key? key}) : super(key: key);
 
   void _handleContinue() {
-    Get.to(() => LoginSuccessView());
+    Get.toNamed(Routes.guestLogin);
   }
 
   void _handleBack() {
-    Get.to(() => LoginView(
-          headline: previousTitle,
-        ));
+    Get.toNamed(Routes.login);
   }
 
   @override

@@ -1,17 +1,19 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/route_manager.dart';
+import 'package:song_voter/models/user.dart';
+import 'package:song_voter/utils/route_utils.dart';
 import 'package:song_voter/utils/services/user_service.dart';
-import 'package:song_voter/widgets/base.dart';
+import 'package:song_voter/widgets/base/base.dart';
+import 'package:song_voter/widgets/login/guest_login/warning/guest_login_warning_view.dart';
 
-class LoginSuccessView extends StatelessWidget {
+class GuestLoginView extends StatelessWidget {
   String _username = "";
   UserService _userService = new UserService();
 
   void _onContinuePress(BuildContext context) async {
     if (_username.isNotEmpty) {
-      await _userService.setUsername(_username);
-      Get.toNamed("/home");
+      await _userService.setUser(User(username: _username));
+      Get.offAllNamed(Routes.home);
     } else {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         content: Text("Please enter a username"),

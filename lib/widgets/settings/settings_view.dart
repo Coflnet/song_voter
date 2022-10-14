@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:song_voter/widgets/base.dart';
+import 'package:song_voter/widgets/base/base.dart';
 
 class SettingsView extends StatelessWidget {
   @override

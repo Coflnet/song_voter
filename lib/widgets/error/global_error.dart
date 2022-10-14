@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:song_voter/widgets/base.dart';
+import 'package:get/get.dart';
+import 'package:song_voter/widgets/base/base.dart';
 
-class GlobalErrorWidget extends StatelessWidget {
-  final String headline;
+class GlobalErrorView extends StatelessWidget {
+  final String headline = Get.arguments["title"] ?? "";
+  final String subHeadline = Get.arguments["subTitle"] ?? "";
 
-  final String? subHeadline;
-
-  const GlobalErrorWidget({Key? key, required this.headline, this.subHeadline})
-      : super(key: key);
+  GlobalErrorView({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -21,9 +20,9 @@ class GlobalErrorWidget extends StatelessWidget {
               headline,
               style: theme.headline1!.copyWith(color: Colors.red),
             ),
-            if (subHeadline != null)
+            if (subHeadline.isNotEmpty)
               Text(
-                subHeadline!,
+                subHeadline,
                 style: theme.headline4!.copyWith(color: Colors.red),
               )
           ],

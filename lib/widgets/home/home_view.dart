@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:song_voter/widgets/base.dart';
+import 'package:song_voter/widgets/base/base.dart';
 import 'package:song_voter/widgets/home/home_controller.dart';
 
 class HomeView extends GetView<HomeController> {
@@ -26,7 +26,7 @@ class HomeView extends GetView<HomeController> {
             ),
           ),
           Center(
-            child: Obx(() => Text("Hello ${controller.username}")),
+            child: Obx(() => Text("Hello ${controller.user.value?.username}")),
           ),
           TextButton(
               onPressed: () {

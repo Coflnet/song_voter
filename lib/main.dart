@@ -2,118 +2,92 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:song_voter/ui/models/user.dart';
-import 'package:song_voter/widgets/home/home.dart';
+import 'package:song_voter/models/user.dart';
+import 'package:song_voter/utils/route_utils.dart';
+import 'package:song_voter/utils/services/user_service.dart';
+import 'package:song_voter/utils/theme_utils.dart';
+import 'package:song_voter/widgets/error/global_error.dart';
+import 'package:song_voter/widgets/home/home_view.dart';
 import 'package:song_voter/widgets/home/home_controller.dart';
-import 'package:song_voter/widgets/log_in/login_view.dart';
+import 'package:song_voter/widgets/login/guest_login/guest_login_view.dart';
+import 'package:song_voter/widgets/login/guest_login/warning/guest_login_warning_view.dart';
+import 'package:song_voter/widgets/login/login_view.dart';
+import 'package:song_voter/widgets/party/create/party_create_controller.dart';
+import 'package:song_voter/widgets/party/create/party_create_view.dart';
+import 'package:song_voter/widgets/party/detail/party_detail_view.dart';
+import 'package:song_voter/widgets/party/list/party_list_controller.dart';
+import 'package:song_voter/widgets/party/list/party_list_view.dart';
+import 'package:song_voter/widgets/party/party_overview_view.dart';
+import 'package:song_voter/widgets/settings/settings_view.dart';
 
 void main() async {
   await GetStorage.init();
   runApp(MyApp());
 }
 
-class MyApp extends StatefulWidget {
-  @override
-  State createState() => MyAppState();
-}
-
-class MyAppState extends State<MyApp> {
-  @override
-  void initState() {
-    super.initState();
-  }
+class MyApp extends StatelessWidget {
+  UserService userService = UserService();
 
   @override
   Widget build(BuildContext context) {
-    Widget? homeWidget;
-    User? user = loadUser();
+    String route = "/";
+    User? user = userService.getUser();
 
     if (user != null) {
-      homeWidget = HomeView();
+      route = "/home";
     } else {
-      homeWidget = LoginView(
-        headline: "Song Voter",
-      );
+      route = "/login";
     }
 
     return GetMaterialApp(
-      title: 'Song Voter',
-      theme: lightTheme(),
-      home: homeWidget,
+      title: 'SongVoter',
+      theme: ThemeUtils.lightTheme,
+      initialRoute: route,
       getPages: [
         GetPage(
-            name: "/home",
+            name: Routes.home,
             page: () => HomeView(),
+            transition: Transition.fadeIn,
             binding: BindingsBuilder(() => {Get.put(HomeController())})),
-        GetPage(name: "/login", page: () => LoginView(headline: "Song Voter"))
+        GetPage(
+            name: Routes.error,
+            page: () => GlobalErrorView(),
+            transition: Transition.fadeIn),
+        GetPage(
+            name: Routes.login,
+            page: () => LoginView(),
+            transition: Transition.fadeIn),
+        GetPage(
+            name: Routes.guestLogin,
+            page: () => GuestLoginView(),
+            transition: Transition.fadeIn),
+        GetPage(
+            name: Routes.guestLoginWarning,
+            page: () => GuestLoginWarningView(),
+            transition: Transition.fadeIn),
+        GetPage(
+            name: Routes.settings,
+            page: () => SettingsView(),
+            transition: Transition.fadeIn),
+        GetPage(
+            name: Routes.party,
+            page: () => PartyOverviewView(),
+            transition: Transition.fadeIn),
+        GetPage(
+            name: Routes.partyCreate,
+            page: () => PartyCreateView(),
+            binding: BindingsBuilder(() => {Get.put(PartyCreateController())}),
+            transition: Transition.fadeIn),
+        GetPage(
+            name: Routes.partyDetail,
+            page: () => PartyDetailView(),
+            transition: Transition.fadeIn),
+        GetPage(
+            name: Routes.partyList,
+            page: () => PartyListView(),
+            binding: BindingsBuilder(() => {Get.put(PartyListController())}),
+            transition: Transition.fadeIn)
       ],
-    );
-  }
-
-  User? loadUser() {
-    return null;
-  }
-
-  ThemeData darkTheme() {
-    return ThemeData(
-      primarySwatch: Colors.blue,
-      backgroundColor: const Color.fromARGB(255, 0, 0, 21),
-      textTheme: GoogleFonts.interTextTheme().copyWith(
-        headline1: const TextStyle(
-          fontSize: 60,
-          fontWeight: FontWeight.bold,
-          color: Color.fromARGB(255, 0x72, 0x73, 0x94),
-        ),
-        bodyText1: const TextStyle(
-          fontSize: 16,
-          color: Color.fromARGB(0xff, 0x72, 0x73, 0x94),
-        ),
-        bodyText2: const TextStyle(
-          fontSize: 20,
-          color: Color.fromARGB(0xff, 0x72, 0x73, 0x94),
-        ),
-      ),
-      textButtonTheme: TextButtonThemeData(
-        style: TextButton.styleFrom(
-          backgroundColor: Colors.deepOrangeAccent,
-        ),
-      ),
-    );
-  }
-
-  ThemeData lightTheme() {
-    return ThemeData(
-      backgroundColor: Colors.white,
-      textTheme: GoogleFonts.interTextTheme().copyWith(
-        headline1: const TextStyle(
-          fontSize: 60,
-          fontWeight: FontWeight.bold,
-        ),
-        headline2: const TextStyle(
-          fontSize: 40,
-          fontWeight: FontWeight.bold,
-        ),
-        headline4: const TextStyle(
-          fontSize: 26,
-          fontWeight: FontWeight.bold,
-          color: Colors.grey,
-        ),
-        headline5: const TextStyle(
-          fontSize: 28,
-          fontWeight: FontWeight.bold,
-        ),
-        headline6: const TextStyle(
-          fontSize: 18,
-          fontWeight: FontWeight.bold,
-          color: Colors.grey,
-        ),
-        bodyText1: const TextStyle(
-          fontSize: 16,
-        ),
-        bodyText2: const TextStyle(
-          fontSize: 20,
-        ),
-      ),
     );
   }
 }

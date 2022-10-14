@@ -1,44 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:song_voter/widgets/base.dart';
+import 'package:get/get.dart';
+import 'package:song_voter/widgets/base/base.dart';
+import 'package:song_voter/widgets/party/create/party_create_controller.dart';
 
-class PartyCreateWidget extends StatefulWidget {
-  @override
-  State<StatefulWidget> createState() => _PartyCreateWidgetState();
-}
-
-class _PartyCreateWidgetState extends State {
-  bool? _private;
-
-  late final TextEditingController _nameController;
-
-  @override
-  void initState() {
-    super.initState();
-
-    _nameController = TextEditingController();
-
-    _handlePrivateParty(false);
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-    _nameController.dispose();
-  }
-
+class PartyCreateView extends GetView<PartyCreateController> {
   Future _handleCreate() async {
-    final name = _nameController.value.text;
-
-    if (_private == null) {
-      //TODO show error
-    }
-
     // TODO do everything
 
     // TODO show success
   }
 
-  void _handlePrivateParty(bool value) => setState(() => _private = value);
+  void onPrivateChange(bool value) {
+    controller.setIsPrivate(value);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -58,10 +32,10 @@ class _PartyCreateWidgetState extends State {
               ),
               child: Row(
                 children: [
-                  Switch(
-                    value: _private ?? false,
-                    onChanged: _handlePrivateParty,
-                  ),
+                  Obx(() => Switch(
+                        value: controller.isPrivate.value,
+                        onChanged: onPrivateChange,
+                      )),
                   Text(
                     "Private Party",
                   ),
@@ -74,7 +48,6 @@ class _PartyCreateWidgetState extends State {
                 right: size.width * 0.05,
               ),
               child: TextField(
-                controller: _nameController,
                 decoration: InputDecoration(
                   labelText: "Name",
                 ),
@@ -85,11 +58,11 @@ class _PartyCreateWidgetState extends State {
                 top: size.height * 0.2,
               ),
               child: TextButton(
+                onPressed: _handleCreate,
                 child: Text(
                   "Create",
                   style: Theme.of(context).textTheme.headline5,
                 ),
-                onPressed: _handleCreate,
               ),
             ),
           ],

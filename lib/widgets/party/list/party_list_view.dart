@@ -1,33 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:get/get.dart';
 import 'package:get/route_manager.dart';
-import 'package:song_voter/ui/models/party.dart';
-import 'package:song_voter/widgets/base.dart';
-import 'package:song_voter/widgets/party/party_detail.dart';
+import 'package:song_voter/models/party.dart';
+import 'package:song_voter/utils/route_utils.dart';
+import 'package:song_voter/widgets/base/base.dart';
+import 'package:song_voter/widgets/party/detail/party_detail_view.dart';
+import 'package:song_voter/widgets/party/list/party_list_controller.dart';
 
-class PartyListWidget extends StatefulWidget {
-  State<StatefulWidget> createState() => _PartyListWidgetState();
-}
-
-class _PartyListWidgetState extends State<PartyListWidget> {
-  late List<Party> _parties;
-
-  @override
-  initState() {
-    super.initState();
-    _parties = List.empty();
-
-    _loadParties();
-  }
-
-  Future _loadParties() async {
-    final List<Party> parties = [];
-
-    setState(() => _parties = parties);
-  }
-
+class PartyListView extends GetView<PartyListController> {
   void _handleTap(Party party) {
-    Get.to(PartyDetailWidget(party: party));
+    Get.toNamed(Routes.partyDetail, arguments: {party: party});
   }
 
   @override
@@ -56,14 +39,12 @@ class _PartyListWidgetState extends State<PartyListWidget> {
               child: ListView.builder(
                 scrollDirection: Axis.vertical,
                 shrinkWrap: true,
-                itemCount: _parties.length,
+                itemCount: controller.parties.length,
                 itemBuilder: (BuildContext context, int index) {
-                  final party = _parties[index];
+                  final party = controller.parties[index];
                   return InkWell(
                     onTap: () => _handleTap(party),
-                    child: Container(
-                      child: Text(party.name),
-                    ),
+                    child: Text(party.name),
                   );
                 },
               ),

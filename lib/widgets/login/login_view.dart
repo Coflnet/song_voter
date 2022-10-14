@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:song_voter/widgets/base.dart';
-import 'package:song_voter/widgets/log_in/guest_login.dart';
+import 'package:get/get.dart';
+import 'package:song_voter/utils/route_utils.dart';
+import 'package:song_voter/widgets/base/base.dart';
+import 'package:song_voter/widgets/login/guest_login/guest_login_view.dart';
 
 class LoginView extends StatelessWidget {
-  final String headline;
-  final String? subHeadline;
+  LoginView({Key? key}) : super(key: key);
 
-  LoginView({Key? key, required this.headline, this.subHeadline})
-      : super(key: key);
+  void _handleGuestSignIn() {
+    Get.toNamed(Routes.guestLoginWarning);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -23,16 +25,9 @@ class LoginView extends StatelessWidget {
                 child: Column(children: [
                   Padding(
                     padding: const EdgeInsets.all(16),
-                    child: Text(headline,
+                    child: Text("SongVoter",
                         style: Theme.of(context).textTheme.headline1),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(16),
-                    child: subHeadline != null
-                        ? Text(subHeadline!,
-                            style: Theme.of(context).textTheme.headline2)
-                        : Container(),
-                  ),
+                  )
                 ]),
               ),
             ),
@@ -73,8 +68,16 @@ class LoginView extends StatelessWidget {
                 ],
               ),
             ),
-            GuestLoginWidget(
-              previousTitle: headline,
+            SizedBox(
+              height: MediaQuery.of(context).size.height * 0.05,
+              width: MediaQuery.of(context).size.width * 0.5,
+              child: TextButton(
+                onPressed: _handleGuestSignIn,
+                child: Text(
+                  "Login as Guest",
+                  style: Theme.of(context).textTheme.bodyText2,
+                ),
+              ),
             )
           ],
         ));
