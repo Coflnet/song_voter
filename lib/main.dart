@@ -7,8 +7,10 @@ import 'package:song_voter/utils/route_utils.dart';
 import 'package:song_voter/utils/services/user_service.dart';
 import 'package:song_voter/utils/theme_utils.dart';
 import 'package:song_voter/widgets/error/global_error.dart';
+import 'package:song_voter/widgets/login/google_signin/google_signin_controller.dart';
 import 'package:song_voter/widgets/home/home_view.dart';
 import 'package:song_voter/widgets/home/home_controller.dart';
+import 'package:song_voter/widgets/login/google_signin/google_signin_view.dart';
 import 'package:song_voter/widgets/login/guest_login/guest_login_view.dart';
 import 'package:song_voter/widgets/login/guest_login/warning/guest_login_warning_view.dart';
 import 'package:song_voter/widgets/login/login_view.dart';
@@ -56,6 +58,11 @@ class MyApp extends StatelessWidget {
         GetPage(
             name: Routes.login,
             page: () => LoginView(),
+            transition: Transition.fadeIn),
+        GetPage(
+            name: Routes.googleLogin,
+            page: () => GoogleSigninView(),
+            binding: BindingsBuilder(() => {Get.put(GoogleSigninController())}),
             transition: Transition.fadeIn),
         GetPage(
             name: Routes.guestLogin,

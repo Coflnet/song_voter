@@ -11,6 +11,10 @@ class LoginView extends StatelessWidget {
     Get.toNamed(Routes.guestLoginWarning);
   }
 
+  void _handleGoogleSignIn() {
+    Get.toNamed(Routes.googleLogin);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Base(
@@ -33,10 +37,13 @@ class LoginView extends StatelessWidget {
             ),
             Padding(
                 padding: const EdgeInsets.only(top: 10, bottom: 10),
-                child: Text("Placeholder...")),
-            Padding(
-                padding: const EdgeInsets.only(top: 10, bottom: 10),
-                child: Text("Placeholder...")),
+                child: TextButton(
+                  onPressed: _handleGoogleSignIn,
+                  child: Text(
+                    "Login with Google",
+                    style: Theme.of(context).textTheme.bodyText2,
+                  ),
+                )),
             Padding(
               padding: const EdgeInsets.only(top: 30, bottom: 30),
               child: Row(
