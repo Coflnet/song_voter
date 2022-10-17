@@ -23,10 +23,6 @@ class GoogleSigninView extends GetView<GoogleSigninController> {
             onPressed: controller.handleSignOut,
             child: const Text('SIGN OUT'),
           ),
-          ElevatedButton(
-            child: const Text('REFRESH'),
-            onPressed: () => controller.handleGetContact(user),
-          ),
         ],
       );
     } else {
