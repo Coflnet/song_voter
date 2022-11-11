@@ -7,7 +7,7 @@ import 'package:http/http.dart' as http;
 
 GoogleSignIn googleSignIn = GoogleSignIn(
   serverClientId:
-      "1092901711600-m6mi9761ncl8eu9vs010eju8cnjmah0s.apps.googleusercontent.com",
+      "450316132885-2a1k6vmlno1tl530c7he4gicgil2j37g.apps.googleusercontent.com",
   scopes: <String>[
     'email',
   ],

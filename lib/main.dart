@@ -21,9 +21,15 @@ import 'package:song_voter/widgets/party/list/party_list_controller.dart';
 import 'package:song_voter/widgets/party/list/party_list_view.dart';
 import 'package:song_voter/widgets/party/party_overview_view.dart';
 import 'package:song_voter/widgets/settings/settings_view.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
 
 void main() async {
   await GetStorage.init();
+
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   runApp(MyApp());
 }
 

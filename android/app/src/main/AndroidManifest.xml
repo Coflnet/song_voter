@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.song_voter">
+    package="com.coflnet.songvoter">
    <application
         android:label="song_voter"
         android:name="${applicationName}"

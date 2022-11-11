@@ -1,4 +1,4 @@
-package com.example.song_voter
+package com.coflnet.songvoter
 
 import io.flutter.embedding.android.FlutterActivity
 
