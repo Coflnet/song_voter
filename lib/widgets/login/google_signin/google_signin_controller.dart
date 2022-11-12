@@ -7,17 +7,17 @@ import 'package:http/http.dart' as http;
 import 'package:openapi/api.dart';
 
 GoogleSignIn googleSignIn = GoogleSignIn(
-  serverClientId:
-      "450316132885-2a1k6vmlno1tl530c7he4gicgil2j37g.apps.googleusercontent.com",
-  scopes: <String>[
-    'email',
-  ],
-);
+    serverClientId:
+        "450316132885-2a1k6vmlno1tl530c7he4gicgil2j37g.apps.googleusercontent.com",
+    scopes: <String>[
+      'email',
+    ]);
 
 class GoogleSigninController extends GetxController {
   final currentUser = Rx<GoogleSignInAccount?>(null);
   final contactText = ''.obs;
-  final api_instance = AuthApiControllerImplApi();
+  final api_instance =
+      AuthApiControllerImplApi(ApiClient(basePath: "https://songvoter.party"));
 
   @override
   void onInit() async {
@@ -25,14 +25,11 @@ class GoogleSigninController extends GetxController {
         .listen((GoogleSignInAccount? account) async {
       currentUser(account);
       try {
-        /*
         final auth = await account?.authentication;
-        debugPrint("asdf");
-        debugPrint(auth?.accessToken);
+        debugPrint(auth?.idToken);
         final result = await api_instance.v1AuthGooglePost(
             coflnetSongVoterModelsAuthToken:
-                CoflnetSongVoterModelsAuthToken(token: auth?.accessToken));
-                */
+                CoflnetSongVoterModelsAuthToken(token: auth?.idToken));
       } catch (e) {
         debugPrint(
             'Exception when calling AuthApiControllerImplApi->v1AuthGooglePost: $e\n');
