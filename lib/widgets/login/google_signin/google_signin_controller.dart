@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:http/http.dart' as http;
+import 'package:openapi/api.dart';
 
 GoogleSignIn googleSignIn = GoogleSignIn(
   serverClientId:
@@ -16,17 +17,35 @@ GoogleSignIn googleSignIn = GoogleSignIn(
 class GoogleSigninController extends GetxController {
   final currentUser = Rx<GoogleSignInAccount?>(null);
   final contactText = ''.obs;
+  final api_instance = AuthApiControllerImplApi();
 
   @override
   void onInit() async {
-    googleSignIn.onCurrentUserChanged.listen((GoogleSignInAccount? account) {
+    googleSignIn.onCurrentUserChanged
+        .listen((GoogleSignInAccount? account) async {
       currentUser(account);
+      try {
+        /*
+        final auth = await account?.authentication;
+        debugPrint("asdf");
+        debugPrint(auth?.accessToken);
+        final result = await api_instance.v1AuthGooglePost(
+            coflnetSongVoterModelsAuthToken:
+                CoflnetSongVoterModelsAuthToken(token: auth?.accessToken));
+                */
+      } catch (e) {
+        debugPrint(
+            'Exception when calling AuthApiControllerImplApi->v1AuthGooglePost: $e\n');
+      }
     });
     googleSignIn.signInSilently();
     super.onInit();
   }
 
-  Future<void> handleSignOut() => googleSignIn.disconnect();
+  Future<void> handleSignOut() {
+    currentUser(null);
+    return googleSignIn.disconnect();
+  }
 
   Future<void> handleSignIn() async {
     try {

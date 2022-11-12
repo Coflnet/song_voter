@@ -44,6 +44,9 @@ dependencies:
   json_annotation: ^4.4.0
   google_sign_in: ^5.4.2
   firebase_core: ^2.2.0
+  youtube_player_flutter: ^8.1.1
+  openapi:
+    path: "./lib/swagger/generated"
 
 dev_dependencies:
   flutter_test:

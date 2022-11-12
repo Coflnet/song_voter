@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:song_voter/models/user.dart';
 import 'package:song_voter/utils/route_utils.dart';
 import 'package:song_voter/utils/services/user_service.dart';
@@ -22,6 +21,7 @@ import 'package:song_voter/widgets/party/list/party_list_view.dart';
 import 'package:song_voter/widgets/party/party_overview_view.dart';
 import 'package:song_voter/widgets/settings/settings_view.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:song_voter/widgets/youtube_player/youtube_player_controller.dart';
 import 'firebase_options.dart';
 
 void main() async {
@@ -81,6 +81,8 @@ class MyApp extends StatelessWidget {
         GetPage(
             name: Routes.settings,
             page: () => SettingsView(),
+            binding:
+                BindingsBuilder(() => {Get.put(YoutubePlayerGetController())}),
             transition: Transition.fadeIn),
         GetPage(
             name: Routes.party,

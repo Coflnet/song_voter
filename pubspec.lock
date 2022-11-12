@@ -237,6 +237,13 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  flutter_inappwebview:
+    dependency: transitive
+    description:
+      name: flutter_inappwebview
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "5.7.1"
   flutter_lints:
     dependency: "direct dev"
     description:
@@ -352,6 +359,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "4.0.1"
+  intl:
+    dependency: transitive
+    description:
+      name: intl
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.17.0"
   io:
     dependency: transitive
     description:
@@ -429,6 +443,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.2"
+  openapi:
+    dependency: "direct main"
+    description:
+      path: "lib/swagger/generated"
+      relative: true
+    source: path
+    version: "1.0.0"
   package_config:
     dependency: transitive
     description:
@@ -700,6 +721,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "3.1.1"
+  youtube_player_flutter:
+    dependency: "direct main"
+    description:
+      name: youtube_player_flutter
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "8.1.1"
 sdks:
   dart: ">=2.18.2 <3.0.0"
   flutter: ">=3.0.0"
