@@ -1,20 +1,27 @@
 import 'package:get_storage/get_storage.dart';
-import 'package:song_voter/models/user.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:song_voter/utils/services/base_service.dart';
 
 class UserService extends BaseService {
-  final usernameStorageKey = "username";
+  static const usernameStorageKey = "username";
+  static const authcodeStorageKey = "authcode";
 
-  User? getUser() {
-    String? username = GetStorage().read<String>(usernameStorageKey);
-    return username == null ? null : User(username: username);
+  static GoogleSignInAccount? getUser() {
+    return GetStorage().read<GoogleSignInAccount>(usernameStorageKey);
   }
 
-  Future<void> setUser(User user) async {
-    GetStorage().write(usernameStorageKey, user.username);
+  static String? getAuthCode() {
+    return GetStorage().read<String>(authcodeStorageKey);
   }
 
-  void removeUsername() {
+  static Future<void> setUser(
+      GoogleSignInAccount user, String? authCode) async {
+    GetStorage().write(authcodeStorageKey, authCode);
+    GetStorage().write(usernameStorageKey, user);
+  }
+
+  static void removeUser() {
     GetStorage().remove(usernameStorageKey);
+    GetStorage().remove(authcodeStorageKey);
   }
 }

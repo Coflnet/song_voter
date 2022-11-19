@@ -47,7 +47,7 @@ class GoogleSigninView extends GetView<GoogleSigninController> {
         ),
         body: ConstrainedBox(
           constraints: const BoxConstraints.expand(),
-          child: _buildBody(),
+          child: Obx(() => _buildBody()),
         ));
   }
 }

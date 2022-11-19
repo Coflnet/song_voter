@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:song_voter/models/user.dart';
 import 'package:song_voter/utils/route_utils.dart';
 import 'package:song_voter/utils/services/user_service.dart';
@@ -34,12 +35,10 @@ void main() async {
 }
 
 class MyApp extends StatelessWidget {
-  UserService userService = UserService();
-
   @override
   Widget build(BuildContext context) {
     String route = "/";
-    User? user = userService.getUser();
+    GoogleSignInAccount? user = UserService.getUser();
 
     if (user != null) {
       route = "/home";

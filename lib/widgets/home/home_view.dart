@@ -26,7 +26,8 @@ class HomeView extends GetView<HomeController> {
             ),
           ),
           Center(
-            child: Obx(() => Text("Hello ${controller.user.value?.username}")),
+            child:
+                Obx(() => Text("Hello ${controller.user.value?.displayName}")),
           ),
           TextButton(
               onPressed: () {

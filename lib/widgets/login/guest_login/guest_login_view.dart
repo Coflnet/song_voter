@@ -8,11 +8,10 @@ import 'package:song_voter/widgets/login/guest_login/warning/guest_login_warning
 
 class GuestLoginView extends StatelessWidget {
   String _username = "";
-  UserService _userService = new UserService();
 
   void _onContinuePress(BuildContext context) async {
     if (_username.isNotEmpty) {
-      await _userService.setUser(User(username: _username));
+      //await UserService.setUser(null, "test");
       Get.offAllNamed(Routes.home);
     } else {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(

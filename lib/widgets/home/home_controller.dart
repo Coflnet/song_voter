@@ -1,14 +1,11 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:song_voter/models/user.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:song_voter/utils/route_utils.dart';
 import 'package:song_voter/utils/services/user_service.dart';
-import 'package:song_voter/widgets/login/login_view.dart';
 
 class HomeController extends GetxController {
-  final userService = UserService();
-  final user = Rx<User?>(null);
+  final user = Rx<GoogleSignInAccount?>(null);
 
   @override
   void onInit() async {
@@ -16,17 +13,17 @@ class HomeController extends GetxController {
     super.onInit();
   }
 
-  updateUser(User? user) {
+  updateUser(GoogleSignInAccount? user) {
     this.user(user);
   }
 
   void loadUsername() {
-    User? user = userService.getUser();
+    GoogleSignInAccount? user = UserService.getUser();
     updateUser(user);
   }
 
   void onLogout(BuildContext context) {
-    userService.removeUsername();
+    UserService.removeUser();
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: Text("Logged out"),
       backgroundColor: Theme.of(context).primaryColor,

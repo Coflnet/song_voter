@@ -3,8 +3,8 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:http/http.dart' as http;
 import 'package:openapi/api.dart';
+import 'package:song_voter/utils/services/user_service.dart';
 
 GoogleSignIn googleSignIn = GoogleSignIn(
     serverClientId:
@@ -14,7 +14,7 @@ GoogleSignIn googleSignIn = GoogleSignIn(
     ]);
 
 class GoogleSigninController extends GetxController {
-  final currentUser = Rx<GoogleSignInAccount?>(null);
+  var currentUser = Rx<GoogleSignInAccount?>(null);
   final contactText = ''.obs;
   final api_instance =
       AuthApiControllerImplApi(ApiClient(basePath: "https://songvoter.party"));
@@ -23,25 +23,29 @@ class GoogleSigninController extends GetxController {
   void onInit() async {
     googleSignIn.onCurrentUserChanged
         .listen((GoogleSignInAccount? account) async {
-      currentUser(account);
-      try {
-        final auth = await account?.authentication;
-        debugPrint(auth?.idToken);
-        final result = await api_instance.v1AuthGooglePost(
-            coflnetSongVoterModelsAuthToken:
-                CoflnetSongVoterModelsAuthToken(token: auth?.idToken));
-      } catch (e) {
-        debugPrint(
-            'Exception when calling AuthApiControllerImplApi->v1AuthGooglePost: $e\n');
+      currentUser.value = account;
+      if (account != null) {
+        try {
+          final auth = await account?.authentication;
+          final result = await api_instance.v1AuthGooglePost(
+              coflnetSongVoterModelsAuthToken:
+                  CoflnetSongVoterModelsAuthToken(token: auth?.idToken));
+          UserService.setUser(account, result?.token);
+          debugPrint("user:");
+          debugPrint(UserService.getUser()?.displayName);
+        } catch (e) {
+          debugPrint(
+              'Exception when calling AuthApiControllerImplApi->v1AuthGooglePost: $e\n');
+        }
       }
     });
     googleSignIn.signInSilently();
     super.onInit();
   }
 
-  Future<void> handleSignOut() {
-    currentUser(null);
-    return googleSignIn.disconnect();
+  void handleSignOut() async {
+    await googleSignIn.disconnect();
+    currentUser.value = null;
   }
 
   Future<void> handleSignIn() async {
