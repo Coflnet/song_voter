@@ -1,10 +1,12 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:song_voter/models/user.dart';
+import 'package:song_voter/swagger/generated/lib/api.dart';
 import 'package:song_voter/utils/route_utils.dart';
-import 'package:song_voter/utils/services/user_service.dart';
+import 'package:song_voter/utils/services/google_service.dart';
 import 'package:song_voter/utils/theme_utils.dart';
 import 'package:song_voter/widgets/error/global_error.dart';
 import 'package:song_voter/widgets/login/google_signin/google_signin_controller.dart';
@@ -31,14 +33,47 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+
   runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
+  final googleSignIn = GoogleService.getGoogleSignIn();
+
+  void onInit() {
+    final apiInstance = AuthApiControllerImplApi(
+        ApiClient(basePath: "https://songvoter.party"));
+
+    googleSignIn.onCurrentUserChanged
+        .listen((GoogleSignInAccount? account) async {
+      debugPrint(account.toString());
+      debugPrint("i am here");
+      if (account != null) {
+        try {
+          final auth = await account.authentication;
+          if (auth.idToken == null) {
+            debugPrint('No idToken received. Login failed');
+            return;
+          }
+          final token = GoogleService.convertBase64UrlToBase64(auth.idToken!);
+          final result = await apiInstance.v1AuthGooglePost(
+              coflnetSongVoterModelsAuthToken:
+                  CoflnetSongVoterModelsAuthToken(token: token));
+          GoogleService.setGoogleToken(result?.token);
+          GoogleService.googleAccount = account;
+        } catch (e) {
+          debugPrint(
+              'Exception when calling AuthApiControllerImplApi->v1AuthGooglePost: $e\n');
+        }
+      }
+    });
+    googleSignIn.signInSilently();
+  }
+
   @override
   Widget build(BuildContext context) {
     String route = "/";
-    GoogleSignInAccount? user = UserService.getUser();
+    GoogleSignInAccount? user = GoogleService.googleAccount;
 
     if (user != null) {
       route = "/home";
@@ -50,6 +85,7 @@ class MyApp extends StatelessWidget {
       title: 'SongVoter',
       theme: ThemeUtils.lightTheme,
       initialRoute: route,
+      onInit: onInit,
       getPages: [
         GetPage(
             name: Routes.home,

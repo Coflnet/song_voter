@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/route_manager.dart';
-import 'package:song_voter/models/user.dart';
 import 'package:song_voter/utils/route_utils.dart';
-import 'package:song_voter/utils/services/user_service.dart';
 import 'package:song_voter/widgets/base/base.dart';
-import 'package:song_voter/widgets/login/guest_login/warning/guest_login_warning_view.dart';
 
 class GuestLoginView extends StatelessWidget {
   String _username = "";

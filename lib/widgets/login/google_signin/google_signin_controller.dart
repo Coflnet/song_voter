@@ -1,10 +1,8 @@
-import 'dart:convert';
-
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:openapi/api.dart';
-import 'package:song_voter/utils/services/user_service.dart';
+import 'package:song_voter/utils/services/google_service.dart';
 
 GoogleSignIn googleSignIn = GoogleSignIn(
     serverClientId:
@@ -15,29 +13,17 @@ GoogleSignIn googleSignIn = GoogleSignIn(
 
 class GoogleSigninController extends GetxController {
   var currentUser = Rx<GoogleSignInAccount?>(null);
+  final googleSignIn = GoogleService.getGoogleSignIn();
   final contactText = ''.obs;
-  final api_instance =
+  final apiInstance =
       AuthApiControllerImplApi(ApiClient(basePath: "https://songvoter.party"));
 
   @override
   void onInit() async {
     googleSignIn.onCurrentUserChanged
         .listen((GoogleSignInAccount? account) async {
+      debugPrint("google sign in controller");
       currentUser.value = account;
-      if (account != null) {
-        try {
-          final auth = await account?.authentication;
-          final result = await api_instance.v1AuthGooglePost(
-              coflnetSongVoterModelsAuthToken:
-                  CoflnetSongVoterModelsAuthToken(token: auth?.idToken));
-          UserService.setUser(account, result?.token);
-          debugPrint("user:");
-          debugPrint(UserService.getUser()?.displayName);
-        } catch (e) {
-          debugPrint(
-              'Exception when calling AuthApiControllerImplApi->v1AuthGooglePost: $e\n');
-        }
-      }
     });
     googleSignIn.signInSilently();
     super.onInit();
