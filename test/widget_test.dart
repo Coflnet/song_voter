@@ -1,13 +1,23 @@
-// This is a basic Flutter widget test.
-//
-// To perform an interaction with a widget in your test, use the WidgetTester
-// utility in the flutter_test package. For example, you can send tap and scroll
-// gestures. You can also use WidgetTester to find child widgets in the widget
-// tree, read text, and verify that the values of widget properties are correct.
-
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:song_voter/api.dart';
+import 'package:song_voter/app.dart';
+import 'package:song_voter/party_state.dart';
 
-import 'package:song_voter/main.dart';
-
-void main() {}
+void main() {
+  testWidgets('a new mobile guest sees a join action without a login screen', (
+    tester,
+  ) async {
+    tester.view.physicalSize = const Size(390, 844);
+    tester.view.devicePixelRatio = 1;
+    addTearDown(tester.view.resetPhysicalSize);
+    addTearDown(tester.view.resetDevicePixelRatio);
+    final state = PartyState(SongVoterApi())..ready = true;
+    await tester.pumpWidget(SongVoterApp(state: state));
+    expect(find.text('Join'), findsOneWidget);
+    expect(find.text('Sign in'), findsNothing);
+    expect(tester.takeException(), isNull);
+    await tester.pumpWidget(const SizedBox());
+    state.dispose();
+  });
+}
