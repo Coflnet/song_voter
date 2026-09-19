@@ -73,7 +73,10 @@ class _PartyHomeState extends State<PartyHome> {
   void initState() {
     super.initState();
     state = widget.state ?? PartyState(SongVoterApi());
-    initialInvite = PartyState.inviteCode(Uri.base.toString());
+    final path = Uri.base.pathSegments;
+    initialInvite = path.length == 2 && path.first == "join"
+        ? PartyState.inviteCode(path.last)
+        : null;
     if (!state.ready) unawaited(state.initialize(initialInvite));
     if (!kIsWeb) {
       _links = AppLinks().uriLinkStream.listen((uri) {

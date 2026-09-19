@@ -1,0 +1,41 @@
+name: CI
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: read
+  packages: write
+  id-token: write
+  security-events: write
+jobs:
+  android:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: '17'
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version-file: .flutter-version
+          cache: true
+      - run: flutter pub get --enforce-lockfile
+      - run: flutter analyze && flutter test
+      - run: flutter build apk --debug --no-pub
+      - uses: actions/upload-artifact@v4
+        with:
+          name: android-test-apk
+          path: build/app/outputs/flutter-apk/app-debug.apk
+  container-ci:
+    needs: android
+    uses: Coflnet/.github/.github/workflows/container-ci.yml@main
+    with:
+      k8s_file: songvoter/chart/charts/songvoter-web-frontend/values.yaml
+      repo_url: https://github.com/Coflnet/fleet
+      scan_with_trivy: true
+    secrets:
+      ARGO_WEBHOOK_SECRET: ${{ secrets.ARGO_WEBHOOK_SECRET }}

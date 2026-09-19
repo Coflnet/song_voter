@@ -1,0 +1,7 @@
+.git
+.dart_tool
+build
+.signing
+android/key.properties
+**/*.jks
+**/*.keystore
