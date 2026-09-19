@@ -5,6 +5,9 @@ on:
   pull_request:
     branches: [main]
   workflow_dispatch:
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
 permissions:
   contents: read
   packages: write
@@ -21,7 +24,7 @@ jobs:
           java-version: '17'
       - uses: subosito/flutter-action@v2
         with:
-          flutter-version-file: .flutter-version
+          flutter-version: '3.47.5'
           cache: true
       - run: flutter pub get --enforce-lockfile
       - run: flutter analyze && flutter test
@@ -30,8 +33,49 @@ jobs:
         with:
           name: android-test-apk
           path: build/app/outputs/flutter-apk/app-debug.apk
+  end-to-end:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          path: song_voter
+      - uses: actions/checkout@v6
+        with:
+          repository: Coflnet/SongVoter
+          path: SongVoter
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: '17'
+      - uses: actions/setup-dotnet@v5
+        with:
+          dotnet-version: '10.0.x'
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.47.5'
+          cache: true
+      - name: Enable emulator acceleration
+        run: |
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules
+          sudo udevadm trigger --name-match=kvm
+      - uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 36
+          target: google_apis
+          arch: x86_64
+          profile: pixel_6
+          script: ANDROID_DEVICE=emulator-5554 CHROMIUM_PATH=/usr/bin/google-chrome ./SongVoter/tests/browser/run.sh
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: end-to-end-results
+          path: |
+            SongVoter/tests/browser/test-results
+            SongVoter/tests/browser/playwright-report
   container-ci:
-    needs: android
+    needs: [android, end-to-end]
     uses: Coflnet/.github/.github/workflows/container-ci.yml@main
     with:
       k8s_file: songvoter/chart/charts/songvoter-web-frontend/values.yaml

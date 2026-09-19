@@ -34,10 +34,16 @@ Configure the Spotify developer app with package/bundle ID
 `/api/config`; no client secret is included in the app. Register each testing
 account with Spotify when the provider app is in development mode.
 
-A release must use your permanent Android signing key. Debug APKs are test
-artifacts only. CI builds the Android test APK and the website; the shared
-Coflnet workflow promotes the website image into `../fleet`. Publish a signed
-release asset named `songvoter.apk` before enabling the website's download link.
+A release requires `android/key.properties` with `storeFile`, `storePassword`,
+`keyAlias`, and `keyPassword`. It never falls back to debug signing. Private keys
+and this properties file are excluded from Git and container contexts. The
+Android release workflow reads `ANDROID_KEYSTORE_BASE64` and
+`ANDROID_KEYSTORE_PASSWORD` from encrypted repository secrets and publishes
+`songvoter.apk` plus its SHA-256 checksum. Increment the pubspec version before
+running another release. Back up the signing identity securely.
+
+Debug APKs are test artifacts only. CI builds the Android test APK and the
+website; the shared Coflnet workflow promotes the website image into `../fleet`.
 Apple builds require macOS/Xcode and an Apple signing identity; they cannot be
 validated on the Linux development host.
 
@@ -67,5 +73,10 @@ must never be able to set its own priority.
 `flutter test` covers proof compatibility, mobile onboarding, join links,
 provider switching, duplicate callbacks, pauses, and retrying failed playback.
 `../SongVoter/tests/browser` covers a real Chromium guest against the live local
-API/database. Provider playback/account permissions still require a device
-smoke test; unit tests use playback adapters without a Spotify account.
+API/database. CI also runs `integration_test/host_test.dart` on an Android emulator, checking
+host creation, persistent QR visibility in both orientations, and ending a party.
+Use the backend's test runner with `ANDROID_DEVICE=emulator-5554` to reproduce
+both browser and native tests. Add `LIVE_PLAYBACK=true` on a provider-accessible
+emulator to test actual YouTube start/pause/resume and automatic advance on end.
+Spotify authorization and audible playback still need a Premium test account
+and the registered app signing fingerprint; they are not simulated as success.
