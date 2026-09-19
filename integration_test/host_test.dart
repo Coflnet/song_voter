@@ -33,6 +33,12 @@ void main() {
     await tester.tap(find.text('Create party'));
     await until(() => state.party != null);
     await tester.pump(const Duration(seconds: 1));
+    expect(
+      find
+          .widgetWithText(TextField, 'Find a song or paste a link')
+          .hitTestable(),
+      findsOneWidget,
+    );
     final qr = find.byType(QrImageView);
     expect(
       find.byWidgetPredicate(
@@ -78,7 +84,9 @@ void main() {
       await tester.tap(find.text('Resume'));
       await until(() => controller.value.playerState == PlayerState.playing);
       final version = state.party!.version;
-      await controller.seekTo(seconds: (await controller.duration) - 1);
+      final duration = await controller.duration;
+      expect(duration, greaterThan(1));
+      await controller.seekTo(seconds: duration - 1, allowSeekAhead: true);
       await until(() => state.party!.version > version);
       checkQr();
     }

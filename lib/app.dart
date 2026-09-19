@@ -297,6 +297,7 @@ class _PartyHomeState extends State<PartyHome> {
                           child: RefreshIndicator(
                             onRefresh: state.refresh,
                             child: ListView(
+                              key: ValueKey(party?.id ?? 'home'),
                               padding: const EdgeInsets.fromLTRB(
                                 24,
                                 20,

@@ -18,6 +18,7 @@ class HostStage extends StatefulWidget {
 }
 
 class _HostStageState extends State<HostStage> with WidgetsBindingObserver {
+  final youtubeKey = GlobalKey();
   late final YoutubePlayback youtube;
   late final HostPlayback player;
   @override
@@ -120,6 +121,7 @@ class _HostStageState extends State<HostStage> with WidgetsBindingObserver {
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(16),
                   child: YoutubePlayer(
+                    key: youtubeKey,
                     controller: youtube.controller,
                     aspectRatio: constraints.maxWidth / 200,
                     enableFullScreenOnVerticalDrag: false,
