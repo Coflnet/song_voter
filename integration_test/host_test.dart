@@ -56,10 +56,14 @@ void main() {
     await SystemChrome.setPreferredOrientations([
       DeviceOrientation.landscapeLeft,
     ]);
-    await tester.pump(const Duration(seconds: 2));
+    await until(
+      () => tester.view.physicalSize.width > tester.view.physicalSize.height,
+    );
     checkQr();
     await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
-    await tester.pump(const Duration(seconds: 2));
+    await until(
+      () => tester.view.physicalSize.height > tester.view.physicalSize.width,
+    );
     await tester.tap(find.text('Start the music'));
     await until(() => state.party?.currentSong != null);
     expect(state.party!.currentSong!.title, 'Midnight City');
