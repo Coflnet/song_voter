@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:flutter/services.dart';
 import 'package:spotify_sdk/spotify_sdk.dart';
 import 'package:youtube_player_iframe/youtube_player_iframe.dart' as youtube;
 
@@ -83,7 +84,7 @@ class SpotifyPlayback extends PlaybackAdapter {
         // This uses actual SDK state, so pausing/seeking does not advance a timer.
         final ended =
             _seenTrack &&
-            (!matches ||
+            ((!matches && state.track != null) ||
                 (state.isPaused &&
                     state.track != null &&
                     state.playbackPosition >= state.track!.duration - 250));
@@ -116,13 +117,26 @@ class SpotifyPlayback extends PlaybackAdapter {
         'Spotify is not connected to SongVoter yet. You can host with YouTube.',
       );
     }
-    if (!await SpotifySdk.connectToSpotifyRemote(
-      clientId: clientId,
-      redirectUrl: 'com.coflnet.songvoter://spotify-callback',
-    )) {
-      throw ApiError('Open Spotify on this device, then try connecting again.');
+    if (!await SpotifySdk.isSpotifyInstalled()) {
+      throw ApiError(
+        'Install Spotify and sign in on this device, then try again.',
+      );
     }
-    await SpotifySdk.pause();
+    try {
+      if (!await SpotifySdk.connectToSpotifyRemote(
+        clientId: clientId,
+        redirectUrl: 'com.coflnet.songvoter://spotify-callback',
+      )) {
+        throw ApiError(
+          'Open Spotify on this device, then try connecting again.',
+        );
+      }
+      await SpotifySdk.pause();
+    } on PlatformException {
+      throw ApiError(
+        'Spotify could not connect. Open Spotify, check your Premium account, and try again.',
+      );
+    }
   }
 
   @override
