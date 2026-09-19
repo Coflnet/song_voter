@@ -104,7 +104,10 @@ class HostPlayback extends ChangeNotifier {
       if (source == null) continue;
       await active?.stop();
       await adapter.connect();
-      if (_disposed) return;
+      if (_disposed) {
+        await adapter.dispose();
+        return;
+      }
       active = adapter;
       _sourceId = source.id;
       _playingVersion = party.version;
@@ -127,7 +130,7 @@ class HostPlayback extends ChangeNotifier {
     } catch (_) {
       error = 'Playback disconnected. Try playing this song again.';
     }
-    notifyListeners();
+    if (!_disposed) notifyListeners();
   }
 
   Future<void> stop() async {

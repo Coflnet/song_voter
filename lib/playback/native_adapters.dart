@@ -70,20 +70,7 @@ class SpotifyPlayback extends PlaybackAdapter {
   @override
   Future<void> connect() async {
     if (_subscription != null) return;
-    final config =
-        await api.request('GET', '/api/config') as Map<String, dynamic>;
-    final clientId = config['spotifyClientId'] as String? ?? '';
-    if (clientId.isEmpty) {
-      throw ApiError(
-        'Spotify is not connected to SongVoter yet. You can host with YouTube.',
-      );
-    }
-    if (!await SpotifySdk.connectToSpotifyRemote(
-      clientId: clientId,
-      redirectUrl: 'com.coflnet.songvoter://spotify-callback',
-    )) {
-      throw ApiError('Open Spotify on this device, then try connecting again.');
-    }
+    await authorize(api);
     _subscription = SpotifySdk.subscribePlayerState().listen(
       (state) {
         final expected = _expected;
@@ -118,6 +105,24 @@ class SpotifyPlayback extends PlaybackAdapter {
         _subscription = null;
       },
     );
+  }
+
+  static Future<void> authorize(SongVoterApi api) async {
+    final config =
+        await api.request('GET', '/api/config') as Map<String, dynamic>;
+    final clientId = config['spotifyClientId'] as String? ?? '';
+    if (clientId.isEmpty) {
+      throw ApiError(
+        'Spotify is not connected to SongVoter yet. You can host with YouTube.',
+      );
+    }
+    if (!await SpotifySdk.connectToSpotifyRemote(
+      clientId: clientId,
+      redirectUrl: 'com.coflnet.songvoter://spotify-callback',
+    )) {
+      throw ApiError('Open Spotify on this device, then try connecting again.');
+    }
+    await SpotifySdk.pause();
   }
 
   @override

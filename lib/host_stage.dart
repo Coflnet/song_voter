@@ -56,13 +56,13 @@ class _HostStageState extends State<HostStage> with WidgetsBindingObserver {
     builder: (context, _) {
       final party = widget.state.party!;
       final qr = SizedBox(
-        width: 172,
+        width: 152,
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
             if (party.joinUrl != null)
               Container(
-                padding: const EdgeInsets.all(10),
+                padding: const EdgeInsets.all(6),
                 decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(16),
@@ -77,10 +77,6 @@ class _HostStageState extends State<HostStage> with WidgetsBindingObserver {
                 ),
               ),
             const SizedBox(height: 8),
-            const Text(
-              'SCAN. ADD. DANCE.',
-              style: TextStyle(fontWeight: FontWeight.w800, letterSpacing: 1),
-            ),
             const Text(
               'songvoter.party',
               style: TextStyle(color: Color(0xffd4ff71)),
@@ -114,40 +110,50 @@ class _HostStageState extends State<HostStage> with WidgetsBindingObserver {
           ],
         ),
       );
+      final video = SizedBox(
+        height: 200,
+        child: LayoutBuilder(
+          builder: (context, constraints) => Column(
+            children: [
+              Offstage(
+                offstage: player.active?.platform == 'spotify',
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(16),
+                  child: YoutubePlayer(
+                    controller: youtube.controller,
+                    aspectRatio: constraints.maxWidth / 200,
+                    enableFullScreenOnVerticalDrag: false,
+                    autoFullScreen: false,
+                  ),
+                ),
+              ),
+              if (player.active?.platform == 'spotify')
+                Container(
+                  height: 200,
+                  alignment: Alignment.center,
+                  decoration: BoxDecoration(
+                    color: const Color(0xff172b22),
+                    borderRadius: BorderRadius.circular(16),
+                  ),
+                  child: const Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Icon(
+                        Icons.graphic_eq_rounded,
+                        size: 54,
+                        color: Color(0xff1ed760),
+                      ),
+                      Text('Playing on Spotify'),
+                    ],
+                  ),
+                ),
+            ],
+          ),
+        ),
+      );
       final playback = Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Offstage(
-            offstage: player.active?.platform == 'spotify',
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(16),
-              child: YoutubePlayer(
-                controller: youtube.controller,
-                enableFullScreenOnVerticalDrag: false,
-                autoFullScreen: false,
-              ),
-            ),
-          ),
-          if (player.active?.platform == 'spotify')
-            Container(
-              height: 200,
-              alignment: Alignment.center,
-              decoration: BoxDecoration(
-                color: const Color(0xff172b22),
-                borderRadius: BorderRadius.circular(16),
-              ),
-              child: const Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Icon(
-                    Icons.graphic_eq_rounded,
-                    size: 54,
-                    color: Color(0xff1ed760),
-                  ),
-                  Text('Playing on Spotify'),
-                ],
-              ),
-            ),
           const SizedBox(height: 12),
           Text(
             party.currentSong?.title ?? 'Ready when you are',
@@ -159,6 +165,8 @@ class _HostStageState extends State<HostStage> with WidgetsBindingObserver {
             party.currentSong?.artist ??
                 'Add a few favourites, then start the music.',
             style: const TextStyle(color: Color(0xffaaa7bc)),
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
           ),
           const SizedBox(height: 12),
           Wrap(
@@ -211,23 +219,42 @@ class _HostStageState extends State<HostStage> with WidgetsBindingObserver {
         ],
       );
       return Container(
-        padding: const EdgeInsets.all(20),
-        margin: const EdgeInsets.only(bottom: 28),
+        padding: const EdgeInsets.all(12),
+        margin: const EdgeInsets.only(bottom: 12),
         decoration: BoxDecoration(
           color: const Color(0xff211d34),
           borderRadius: BorderRadius.circular(24),
         ),
         child: LayoutBuilder(
-          builder: (context, constraints) => constraints.maxWidth >= 650
-              ? Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Expanded(child: playback),
-                    const SizedBox(width: 24),
-                    qr,
-                  ],
-                )
-              : Column(children: [playback, const SizedBox(height: 24), qr]),
+          builder: (context, constraints) {
+            final details = SizedBox(
+              height: 226,
+              child: SingleChildScrollView(child: playback),
+            );
+            return constraints.maxWidth >= 650
+                ? Row(
+                    children: [
+                      Expanded(child: video),
+                      const SizedBox(width: 16),
+                      Expanded(child: details),
+                      const SizedBox(width: 16),
+                      qr,
+                    ],
+                  )
+                : Column(
+                    children: [
+                      video,
+                      const SizedBox(height: 12),
+                      Row(
+                        children: [
+                          Expanded(child: details),
+                          const SizedBox(width: 12),
+                          qr,
+                        ],
+                      ),
+                    ],
+                  );
+          },
         ),
       );
     },

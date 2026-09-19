@@ -9,6 +9,7 @@ import 'api.dart';
 import 'host_stage.dart';
 import 'models.dart';
 import 'party_state.dart';
+import 'playback/native_adapters.dart';
 
 const ink = Color(0xff12101d);
 const surface = Color(0xff211d30);
@@ -96,7 +97,7 @@ class _PartyHomeState extends State<PartyHome> {
   }
 
   Future<void> host() async {
-    final name = TextEditingController(text: 'My house party');
+    var name = 'My house party';
     var spotify = false;
     final result = await showDialog<(String, bool)>(
       context: context,
@@ -108,8 +109,9 @@ class _PartyHomeState extends State<PartyHome> {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                TextField(
-                  controller: name,
+                TextFormField(
+                  initialValue: name,
+                  onChanged: (value) => name = value,
                   maxLength: 30,
                   decoration: const InputDecoration(labelText: 'Party name'),
                 ),
@@ -142,8 +144,8 @@ class _PartyHomeState extends State<PartyHome> {
             ),
             FilledButton(
               onPressed: () {
-                if (name.text.trim().isNotEmpty) {
-                  Navigator.pop(context, (name.text.trim(), spotify));
+                if (name.trim().isNotEmpty) {
+                  Navigator.pop(context, (name.trim(), spotify));
                 }
               },
               child: const Text('Create party'),
@@ -152,8 +154,11 @@ class _PartyHomeState extends State<PartyHome> {
         ),
       ),
     );
-    // Dialog transition still references its controller briefly.
     if (result != null) {
+      if (result.$2) {
+        await state.perform(() => SpotifyPlayback.authorize(state.api));
+        if (state.error != null) return;
+      }
       await state.create(result.$1, ['youtube', if (result.$2) 'spotify']);
     }
   }

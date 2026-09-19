@@ -178,12 +178,18 @@ class PartyState extends ChangeNotifier {
   });
 
   Future<Party> advance(int version) async {
-    party = Party.fromJson(
+    final generation = ++_generation;
+    final updated = Party.fromJson(
       await api.request('POST', '/api/party/next', {'version': version})
           as Map<String, dynamic>,
     );
+    if (generation != _generation) {
+      throw ApiError('The party changed. Please retry.', 409);
+    }
+    _generation++;
+    party = updated;
     changed();
-    return party!;
+    return updated;
   }
 
   Future<void> leave() => perform(() async {
