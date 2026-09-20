@@ -12,7 +12,7 @@ FROM build AS test
 RUN flutter analyze && flutter test
 
 FROM test AS publish
-RUN flutter build web --release --no-pub
+RUN flutter build web --release --no-pub && sh tool/fingerprint-web.sh
 
 FROM nginxinc/nginx-unprivileged:stable-alpine AS final
 COPY nginx.conf /etc/nginx/conf.d/default.conf

@@ -109,3 +109,7 @@ both browser and native tests. Add `LIVE_PLAYBACK=true` on a provider-accessible
 emulator to test actual YouTube start/pause/resume and automatic advance on end.
 Spotify authorization and audible playback still need a Premium test account
 and the registered app signing fingerprint; they are not simulated as success.
+
+Production and browser-test builds run `sh tool/fingerprint-web.sh` after
+`flutter build web`. The entrypoint, bootstrap, site script and stylesheet use
+content hashes so cached assets cannot mix versions after OAuth redirects.
