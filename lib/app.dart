@@ -127,6 +127,7 @@ class _PartyHomeState extends State<PartyHome> {
       await state.api.request('POST', '/api/import/$provider/complete', {
         'state': pending['state'],
         'proof': pending['proof'],
+        'receipt': uri.queryParameters['receipt'],
       });
       await state.api.storage.delete(key: 'musicImport');
     });
@@ -150,6 +151,8 @@ class _PartyHomeState extends State<PartyHome> {
   );
 
   Widget importActions(bool hosting) => Container(
+    // Refresh web accessibility bounds when the saved-favourites action appears.
+    key: ValueKey(state.favourites.isNotEmpty),
     padding: EdgeInsets.all(hosting ? 8 : 20),
     margin: const EdgeInsets.only(bottom: 24),
     decoration: BoxDecoration(

@@ -71,7 +71,8 @@ and `user-library-read`, an eligible developer app owner and authorized test use
 Its development API only exposes owned/collaborative playlists and saved tracks.
 The Android/iOS return scheme is `com.coflnet.songvoter://import-callback`.
 Provider tokens stay encrypted on the server; an OAuth return requires both the
-original profile session and a device-held proof before connecting the account.
+original profile session, a device-held proof, and a one-time receipt from the
+provider return before connecting the account.
 
 ## Extend
 
