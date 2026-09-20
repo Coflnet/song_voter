@@ -1,47 +1,95 @@
-<!DOCTYPE html>
-<html>
+<!doctype html>
+<html lang="en">
 <head>
-  <!--
-    If you are serving your web app in a path other than the root, change the
-    href value below to reflect the base path you are serving from.
-
-    The path provided below has to start and end with a slash "/" in order for
-    it to work correctly.
-
-    For more details:
-    * https://developer.mozilla.org/en-US/docs/Web/HTML/Element/base
-
-    This is a placeholder for base href that will be replaced by the value of
-    the `--base-href` argument provided to `flutter build`.
-  -->
   <base href="$FLUTTER_BASE_HREF">
-
-  <meta charset="UTF-8">
-  <meta content="IE=Edge" http-equiv="X-UA-Compatible">
-  <meta name="description" content="Join the party. Add your favourites. No sign-in needed.">
-
-  <!-- iOS meta tags & icons -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#12101d">
+  <meta name="description" content="A great party needs everyone’s music. Scan a QR, add your favourite songs, and let SongVoter DJ. Free, with no guest sign-in.">
+  <meta property="og:title" content="SongVoter · Good music is a group effort.">
+  <meta property="og:description" content="Your friends. Their favourites. One shared dance floor. Join in your browser or host with the Android app.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://songvoter.party/">
   <meta name="mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black">
   <meta name="apple-mobile-web-app-title" content="SongVoter">
+  <link rel="icon" type="image/svg+xml" href="mark.svg">
   <link rel="apple-touch-icon" href="icons/Icon-192.png">
-
-  <!-- Favicon -->
-  <link rel="icon" type="image/png" href="favicon.png"/>
-
-  <title>SongVoter · Everyone gets a say</title>
   <link rel="manifest" href="manifest.json">
-  <style>html, body { margin: 0; height: 100%; overflow: hidden; background: #12101d; }</style>
+  <title>SongVoter · Good music is a group effort.</title>
+  <script>if (!['/', '/index.html'].includes(location.pathname)) document.documentElement.dataset.view = 'app';</script>
+  <link rel="stylesheet" href="landing.css">
 </head>
 <body>
-  <!--
-    You can customize the "flutter_bootstrap.js" script.
-    This is useful to provide a custom configuration to the Flutter loader
-    or to give the user feedback during the initialization process.
-
-    For more details:
-    * https://docs.flutter.dev/platform-integration/web/initialization
-  -->
-  <script src="flutter_bootstrap.js" async></script>
+<div id="landing">
+  <header class="nav wrap">
+    <a class="brand" href="/" aria-label="SongVoter home"><img src="mark.svg" alt="" width="30" height="30">songvoter<span class="brand-dot">.</span></a>
+    <nav aria-label="Main navigation"><a class="how-link" href="#how-it-works">How it works</a><a class="nav-join" href="#join">Join a party <span aria-hidden="true">↗</span></a></nav>
+  </header>
+  <main>
+    <section class="hero wrap" aria-labelledby="hero-title">
+      <div class="hero-copy">
+        <p class="eyebrow"><span class="live-dot"></span> EVERYONE GETS A SAY</p>
+        <h1 id="hero-title">Good music is<br> a <em>group effort.</em></h1>
+        <p class="intro">Your friends. Their favourites. One shared dance floor. Bring everyone’s music together and let SongVoter take the next track.</p>
+        <div class="hero-actions"><a class="button primary" href="#join">Join a party <span aria-hidden="true">↗</span></a><a class="button secondary" href="/downloads/songvoter.apk">Get the host app <span aria-hidden="true">↓</span></a></div>
+        <p class="fine-print">Free to play together. No guest accounts. Just good company.</p>
+        <div class="providers"><span>BRING YOUR FAVOURITES FROM</span><b><span class="youtube" aria-hidden="true">▶</span> YouTube</b><b><span class="spotify" aria-hidden="true">◉</span> Spotify</b></div>
+      </div>
+      <div class="party-art" role="img" aria-label="Illustration of a shared party queue with a vinyl record and everyone’s favourite songs">
+        <div class="orbit orbit-one"></div><div class="orbit orbit-two"></div>
+        <div class="record"><div class="record-label"><span>GOOD<br>COMPANY</span><i></i><small>SIDE A · ALL OF US</small></div></div>
+        <span class="sticker">PASS THE AUX.<br>TO EVERYONE.</span>
+        <div class="queue-preview"><div class="preview-heading"><span><i class="live-dot"></i> THE LIVING ROOM</span><small>Queue preview</small></div>
+          <div class="preview-track playing"><span class="cover cover-one">♫</span><div><b>That one you all know</b><small>Now playing · YouTube</small></div><span class="equalizer"><i></i><i></i><i></i></span></div>
+          <div class="preview-track"><span class="cover cover-two">✦</span><div><b>Your new favourite</b><small>Up next · Spotify</small></div><span class="heart">♥</span></div>
+          <div class="preview-track"><span class="cover cover-three">☀</span><div><b>One more before we go</b><small>Added by the room</small></div><span class="heart">♥</span></div>
+          <div class="preview-bottom"><span class="avatars"><i>J</i><i>A</i><i>M</i></span><span>A little bit of everyone.</span></div>
+        </div>
+      </div>
+    </section>
+    <div class="ticker" aria-hidden="true"><span>LESS QUEUE DUTY</span><b>✳</b><span>MORE DANCING</span><b>✳</b><span>EVERYONE’S FAVOURITES</span><b>✳</b><span>ONE GOOD NIGHT</span></div>
+    <section class="steps wrap" id="how-it-works" aria-labelledby="steps-title">
+      <div class="section-heading"><p class="eyebrow">SET THE MOOD. WE’LL KEEP IT GOING.</p><h2 id="steps-title">From “put something on”<br>to everyone singing along.</h2></div>
+      <div class="step-grid">
+        <article><span class="step-number">01 / HOST</span><h3>One phone. Your speakers.</h3><p>Open the Android app, create a party, and connect your speakers. Play YouTube videos or connect your Spotify account.</p></article>
+        <article><span class="step-number">02 / JOIN</span><h3>Scan. You’re in.</h3><p>The host’s QR stays beside the music. Guests scan it and join in their browser. No downloads or sign-in to slow things down.</p></article>
+        <article><span class="step-number">03 / PLAY</span><h3>Heart it. Hear it.</h3><p>Search or paste a song link. Your favourites help shape what plays next, while shared voting weight keeps one long list from taking over.</p></article>
+      </div>
+    </section>
+    <section class="join-section wrap" id="join" aria-labelledby="join-title">
+      <div><p class="eyebrow">THERE’S ROOM FOR YOUR MUSIC</p><h2 id="join-title">Already at the party?</h2><p>Scan the QR on the host’s screen, or drop your invite here.</p></div>
+      <form id="join-form"><label for="invite">Party code or invite link</label><div class="join-fields"><input id="invite" name="invite" required autocomplete="off" spellcheck="false" placeholder="e.g. a1b2c3d4e5f6" aria-describedby="join-help"><button class="button primary" type="submit">Let me in <span aria-hidden="true">↗</span></button></div><p id="join-help">No invite yet? <a href="/app">Save your favourites for later →</a></p></form>
+    </section>
+    <section class="details wrap" aria-labelledby="details-title"><h2 id="details-title">A few things before<br>the first track.</h2><div class="faq">
+      <details><summary>Is SongVoter free?</summary><p>Yes. Hosting, joining, adding songs, and voting are free. There are no paid boosts in this version.</p></details>
+      <details><summary>Does everyone need an app?</summary><p>Only the host needs the Android app. Guests join with any modern phone browser. Keep the host app open so playback and the party QR stay visible.</p></details>
+      <details><summary>How do YouTube and Spotify work?</summary><p>The host app plays YouTube videos on screen. Spotify playback uses the installed Spotify app and the host’s Premium account. Guests can add songs from either platform; the queue plays the sources the host has enabled.</p></details>
+      <details><summary>Will I keep my favourites?</summary><p>Yes. SongVoter remembers your anonymous profile on this browser or device. Your favourites come with you when you join another party. Clearing browser data or changing devices starts a new profile.</p></details>
+      <details><summary>Can I host on an iPhone?</summary><p>You can join from your iPhone browser today. Hosting is available on Android first; an iOS host app is not available yet.</p></details>
+    </div></section>
+    <section class="closing wrap"><p class="eyebrow">YOU BRING THE PEOPLE.</p><h2>We’ll bring their music together.</h2><a class="button primary" href="/downloads/songvoter.apk">Host your next good night <span aria-hidden="true">↓</span></a><p class="fine-print">Android app · Direct APK download</p></section>
+  </main>
+  <footer class="wrap"><a class="brand" href="/"><img src="mark.svg" alt="" width="25" height="25">songvoter.</a><span>Made for the music between us.</span><a href="https://coflnet.com/imprint">Imprint</a><a href="https://coflnet.com/privacy">Privacy</a></footer>
+</div>
+<script>
+if (document.documentElement.dataset.view === 'app') {
+  document.getElementById('landing').remove();
+  const script = document.createElement('script');
+  script.src = 'flutter_bootstrap.js';
+  script.async = true;
+  document.body.append(script);
+} else {
+  const input = document.getElementById('invite');
+  input.addEventListener('input', () => input.setCustomValidity(''));
+  document.getElementById('join-form').addEventListener('submit', event => {
+    event.preventDefault();
+    const value = input.value.trim();
+    const match = value.match(/^(?:https:\/\/songvoter\.party\/join\/)?([a-f0-9]{12})\/?$/i);
+    if (match) location.assign('/join/' + match[1].toLowerCase());
+    else { input.setCustomValidity('Enter the 12-character party code or a songvoter.party invite link.'); input.reportValidity(); }
+  });
+}
+</script>
+<noscript><p class="noscript">The party app needs JavaScript to join and save your favourites. You can still <a href="/downloads/songvoter.apk">download the Android host app</a>.</p></noscript>
 </body>
 </html>

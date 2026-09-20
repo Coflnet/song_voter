@@ -5,6 +5,7 @@ import 'app.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
-  usePathUrlStrategy();
+  // This single-screen app reads invite paths itself; preserve them on reload.
+  setUrlStrategy(null);
   runApp(const SongVoterApp());
 }

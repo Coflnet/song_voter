@@ -1,7 +1,7 @@
 {
     "name": "SongVoter",
     "short_name": "SongVoter",
-    "start_url": ".",
+    "start_url": "/app",
     "display": "standalone",
     "background_color": "#12101d",
     "theme_color": "#12101d",
