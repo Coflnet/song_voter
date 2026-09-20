@@ -133,17 +133,21 @@ class _PartyHomeState extends State<PartyHome> {
     if (mounted) await showImport(provider!, autoConnect: false);
   }
 
-  Future<void> showImport(String provider, {bool autoConnect = true}) =>
-      showModalBottomSheet<void>(
-        context: context,
-        isScrollControlled: true,
-        showDragHandle: true,
-        builder: (_) => ImportSheet(
-          state: state,
-          provider: provider,
-          autoConnect: autoConnect,
-        ),
-      );
+  Future<void> showImport(
+    String provider, {
+    bool autoConnect = true,
+    bool linkMode = false,
+  }) => showModalBottomSheet<void>(
+    context: context,
+    isScrollControlled: true,
+    showDragHandle: true,
+    builder: (_) => ImportSheet(
+      state: state,
+      provider: provider,
+      autoConnect: autoConnect,
+      linkMode: linkMode,
+    ),
+  );
 
   Widget importActions(bool hosting) => Container(
     padding: EdgeInsets.all(hosting ? 8 : 20),
@@ -208,6 +212,18 @@ class _PartyHomeState extends State<PartyHome> {
             ),
           ],
         ),
+        if (!hosting)
+          TextButton(
+            onPressed: state.busy
+                ? null
+                : () =>
+                      showImport('youtube', autoConnect: false, linkMode: true),
+            child: Text(
+              context.german
+                  ? 'YouTube-Playlistlink verwenden'
+                  : 'Use a YouTube playlist link',
+            ),
+          ),
       ],
     ),
   );

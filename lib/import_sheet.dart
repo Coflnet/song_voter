@@ -15,10 +15,11 @@ class ImportSheet extends StatefulWidget {
     required this.state,
     required this.provider,
     this.autoConnect = true,
+    this.linkMode = false,
   });
   final PartyState state;
   final String provider;
-  final bool autoConnect;
+  final bool autoConnect, linkMode;
   @override
   State<ImportSheet> createState() => _ImportSheetState();
 }
@@ -35,6 +36,7 @@ class _ImportSheetState extends State<ImportSheet> {
   @override
   void initState() {
     super.initState();
+    paste = widget.linkMode;
     WidgetsBinding.instance.addPostFrameCallback((_) => load(first: true));
   }
 

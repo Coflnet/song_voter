@@ -8,7 +8,8 @@ Android is the primary host; iOS uses the same playback adapters and app source.
 The website is for guests. The host connects speakers, creates an event, and
 keeps the player/QR screen open. YouTube uses its visible IFrame player; Spotify
 uses the installed Spotify app through App Remote. Guests need neither SDK nor
-provider account. Spotify hosts need an eligible Premium account and must grant
+provider account to join, search or vote. Importing private lists requires the
+chosen music account’s read-only authorization. Spotify hosts need an eligible Premium account and must grant
 Spotify's requested authorization.
 
 ## Develop
@@ -47,6 +48,31 @@ website; the shared Coflnet workflow promotes the website image into `../fleet`.
 Apple builds require macOS/Xcode and an Apple signing identity; they cannot be
 validated on the Linux development host.
 
+## Languages and playlist imports
+
+The app follows the device/browser language (German and English). Website language
+links persist the choice; `/app?lang=de` overrides it for the guest app. Static
+`/de/`, `/how-it-works/` and `/de/so-funktionierts/` pages have canonical and hreflang
+links and are listed in `/sitemap.xml`. They work without JavaScript.
+
+After scanning a party QR, tap **Use my favourites**, **YouTube**, or **Spotify**.
+The provider buttons open read-only OAuth when disconnected, then return to the
+same anonymous profile and party with a list picker. Tapping a list imports it.
+The YouTube playlist-link fallback also works without connecting an account.
+Existing favourites stay saved, duplicates count once, and imports fill at most
+30 spaces. Private liked songs are available in the connected list picker.
+
+The backend needs Google web OAuth client credentials and Spotify client credentials.
+Register `https://songvoter.party/api/import/youtube/callback` with Google and
+`https://songvoter.party/api/import/spotify/callback` with Spotify. Google needs
+the YouTube Data API and `youtube.readonly` consent; testing apps need eligible
+test accounts. Spotify needs `playlist-read-private`, `playlist-read-collaborative`
+and `user-library-read`, an eligible developer app owner and authorized test users.
+Its development API only exposes owned/collaborative playlists and saved tracks.
+The Android/iOS return scheme is `com.coflnet.songvoter://import-callback`.
+Provider tokens stay encrypted on the server; an OAuth return requires both the
+original profile session and a device-held proof before connecting the account.
+
 ## Extend
 
 * `api.dart`: secure device identity, background proof of work, token renewal.
@@ -57,6 +83,8 @@ validated on the Linux development host.
 * `playback/native_adapters.dart`: YouTube and Spotify adapters. Add another
   adapter plus its backend `IMusicCatalog` implementation for a new provider.
 * `app.dart` / `host_stage.dart`: guest interface and persistent host QR/player.
+* `import_sheet.dart`: account connection, list selection and import feedback.
+* `strings.dart`: German translations for shared UI and server messages.
 
 Favourites belong to the profile that created them. Clearing app/browser storage
 loses the anonymous profile; it is intentionally not recoverable by guessing a
