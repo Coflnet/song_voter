@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:app_links/app_links.dart';
 import 'package:flutter/foundation.dart';
@@ -8,6 +9,7 @@ import 'package:url_launcher/url_launcher.dart';
 
 import 'api.dart';
 import 'host_stage.dart';
+import 'import_sheet.dart';
 import 'models.dart';
 import 'party_state.dart';
 import 'strings.dart';
@@ -85,14 +87,130 @@ class _PartyHomeState extends State<PartyHome> {
     initialInvite = path.length == 2 && path.first == "join"
         ? PartyState.inviteCode(path.last)
         : null;
-    if (!state.ready) unawaited(state.initialize(initialInvite));
+    unawaited(start());
     if (!kIsWeb) {
       _links = AppLinks().uriLinkStream.listen((uri) {
-        final invite = PartyState.inviteCode(uri.toString());
-        if (invite != null) unawaited(state.join(invite));
+        unawaited(handleLink(uri));
       });
     }
   }
+
+  Future<void> start() async {
+    if (!state.ready) await state.initialize(initialInvite);
+    if (!mounted || !state.ready) return;
+    if (kIsWeb) {
+      await handleLink(Uri.base);
+    } else {
+      final link = await AppLinks().getInitialLink();
+      if (link != null && mounted) await handleLink(link);
+    }
+  }
+
+  Future<void> handleLink(Uri uri) async {
+    if (!state.ready) return;
+    final invite = PartyState.inviteCode(uri.toString());
+    if (invite != null && invite != initialInvite) await state.join(invite);
+    if (uri.queryParameters['oauthError'] != null) {
+      state.error = 'Connection expired. Choose a service to try again.';
+      state.changed();
+    }
+    final provider = uri.queryParameters['import'];
+    if (!['youtube', 'spotify'].contains(provider)) return;
+    final saved = await state.api.storage.read(key: 'musicImport');
+    if (saved == null) return;
+    final pending = jsonDecode(saved) as Map<String, dynamic>;
+    if (pending['state'] != uri.queryParameters['state'] ||
+        pending['provider'] != provider) {
+      return;
+    }
+    await state.perform(() async {
+      await state.api.request('POST', '/api/import/$provider/complete', {
+        'state': pending['state'],
+        'proof': pending['proof'],
+      });
+      await state.api.storage.delete(key: 'musicImport');
+    });
+    if (mounted) await showImport(provider!, autoConnect: false);
+  }
+
+  Future<void> showImport(String provider, {bool autoConnect = true}) =>
+      showModalBottomSheet<void>(
+        context: context,
+        isScrollControlled: true,
+        showDragHandle: true,
+        builder: (_) => ImportSheet(
+          state: state,
+          provider: provider,
+          autoConnect: autoConnect,
+        ),
+      );
+
+  Widget importActions(bool hosting) => Container(
+    padding: EdgeInsets.all(hosting ? 8 : 20),
+    margin: const EdgeInsets.only(bottom: 24),
+    decoration: BoxDecoration(
+      color: surface,
+      borderRadius: BorderRadius.circular(22),
+    ),
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        if (!hosting) ...[
+          Text(
+            context.german
+                ? 'Deine Musik ist schon da.'
+                : 'Your music is already out there.',
+            style: const TextStyle(fontSize: 21, fontWeight: FontWeight.bold),
+          ),
+          const SizedBox(height: 8),
+          Text(
+            context.german
+                ? 'Bring eine Lieblingsliste mit – ohne jeden Song einzeln zu suchen.'
+                : 'Bring a favourite list — no need to search for every song.',
+            style: const TextStyle(color: muted),
+          ),
+          const SizedBox(height: 16),
+        ],
+        if (!hosting && state.favourites.isNotEmpty && state.party != null) ...[
+          FilledButton.icon(
+            onPressed: state.busy
+                ? null
+                : () async {
+                    await state.useFavourites();
+                    if (mounted && state.error == null) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text(
+                            context.tr('Your favourites are in the party.'),
+                          ),
+                        ),
+                      );
+                    }
+                  },
+            icon: const Icon(Icons.favorite),
+            label: Text(context.tr('Use my favourites')),
+          ),
+          const SizedBox(height: 12),
+        ],
+        Wrap(
+          spacing: 12,
+          runSpacing: 12,
+          children: [
+            OutlinedButton.icon(
+              onPressed: state.busy ? null : () => showImport('youtube'),
+              icon: const Icon(Icons.smart_display_outlined),
+              label: const Text('YouTube'),
+            ),
+            OutlinedButton.icon(
+              onPressed: state.busy ? null : () => showImport('spotify'),
+              icon: const Icon(Icons.music_note),
+              label: const Text('Spotify'),
+            ),
+          ],
+        ),
+      ],
+    ),
+  );
 
   @override
   void dispose() {
@@ -524,6 +642,7 @@ class _PartyHomeState extends State<PartyHome> {
                                       ],
                                     ),
                                   ),
+                                importActions(hosting),
                                 TextField(
                                   controller: search,
                                   textInputAction: TextInputAction.search,

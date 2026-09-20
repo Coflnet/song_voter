@@ -109,12 +109,15 @@ class PartyState extends ChangeNotifier {
     final uri = Uri.tryParse(value);
     final code =
         uri != null &&
+            uri.scheme == 'https' &&
             uri.host == 'songvoter.party' &&
             uri.pathSegments.length == 2 &&
             uri.pathSegments.first == 'join'
         ? uri.pathSegments.last
         : value;
-    return RegExp(r'^[a-f0-9]{12}$').hasMatch(code) ? code : null;
+    return RegExp(r'^[a-f0-9]{12}$', caseSensitive: false).hasMatch(code)
+        ? code.toLowerCase()
+        : null;
   }
 
   Future<void> create(String name, List<String> platforms) => perform(() async {
@@ -175,6 +178,17 @@ class PartyState extends ChangeNotifier {
       );
     }
     await loadFavourites();
+  });
+
+  Future<void> useFavourites() => perform(() async {
+    if (party == null || favourites.isEmpty) return;
+    party = Party.fromJson(
+      await api.request(
+        'POST',
+        '/api/party/add',
+        favourites.take(30).map((s) => s.id).toList(),
+      ) as Map<String, dynamic>,
+    );
   });
 
   Future<Party> advance(int version) async {

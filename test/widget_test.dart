@@ -8,7 +8,9 @@ void main() {
   testWidgets(
     'German device locale localizes guest actions and Material controls',
     (tester) async {
-      tester.binding.platformDispatcher.localesTestValue = const [Locale('de', 'DE')];
+      tester.binding.platformDispatcher.localesTestValue = const [
+        Locale('de', 'DE'),
+      ];
       addTearDown(tester.binding.platformDispatcher.clearLocalesTestValue);
       final state = PartyState(SongVoterApi())..ready = true;
       await tester.pumpWidget(SongVoterApp(state: state));

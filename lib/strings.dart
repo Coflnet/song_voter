@@ -7,6 +7,40 @@ extension SongVoterStrings on BuildContext {
 }
 
 const _german = <String, String>{
+  "Liked songs": "Lieblingssongs",
+  "More lists": "Weitere Listen",
+  "Use a playlist link instead": "Stattdessen einen Playlistlink verwenden",
+  "Playlist link": "Playlistlink",
+  "Import playlist": "Playlist importieren",
+  "Disconnect account": "Konto trennen",
+  "Use my favourites": "Meine Favoriten nutzen",
+  "Your favourites are in the party.": "Deine Favoriten sind in der Party.",
+  "Account import is not connected yet. You can still import a YouTube playlist link.": "Der Kontoimport ist noch nicht verbunden. Du kannst weiterhin einen YouTube-Playlistlink importieren.",
+  "Return to the browser or device where you started connecting.": "Kehre zu dem Browser oder Gerät zurück, auf dem du die Verbindung gestartet hast.",
+  "Connection cancelled. Choose a service to try again.":
+      "Verbindung abgebrochen. Wähle einen Dienst, um es erneut zu versuchen.",
+  "The music account could not connect. Please try again.":
+      "Das Musikkonto konnte nicht verbunden werden. Bitte versuche es erneut.",
+  "Connect your music account to choose a list.":
+      "Verbinde dein Musikkonto, um eine Liste auszuwählen.",
+  "Reconnect your music account to continue.":
+      "Verbinde dein Musikkonto erneut, um fortzufahren.",
+  "The music service could not open this list. Check account access or try another playlist.": "Der Musikdienst konnte diese Liste nicht öffnen. Prüfe den Kontozugriff oder versuche eine andere Playlist.",
+  "The music service is taking too long. Please try again.":
+      "Der Musikdienst braucht zu lange. Bitte versuche es erneut.",
+  "Choose a playlist or paste its full link.":
+      "Wähle eine Playlist oder füge ihren vollständigen Link ein.",
+  "Choose the matching music service for this playlist.":
+      "Wähle den passenden Musikdienst für diese Playlist.",
+  "Could not open the music service. Please try again.":
+      "Der Musikdienst konnte nicht geöffnet werden. Bitte versuche es erneut.",
+  "Connection expired. Choose a service to try again.": "Die Verbindung ist abgelaufen. Wähle einen Dienst, um es erneut zu versuchen.",
+  "The queue changed. Please try again.":
+      "Die Warteschlange hat sich geändert. Bitte versuche es erneut.",
+  "This party's queue is full.": "Die Warteschlange dieser Party ist voll.",
+  "Choose up to 30 favourites for this party.":
+      "Wähle bis zu 30 Favoriten für diese Party.",
+
   "Make room for everyone’s music": "Platz für eure Lieblingsmusik",
   "My house party": "Meine Hausparty",
   "Party name": "Name der Party",

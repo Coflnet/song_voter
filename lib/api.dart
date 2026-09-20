@@ -75,7 +75,11 @@ class SongVoterApi {
     }
     if (body != null) request.body = jsonEncode(body);
     final response = await http.Response.fromStream(
-      await client.send(request).timeout(const Duration(seconds: 20)),
+      await client
+          .send(request)
+          .timeout(
+            Duration(seconds: path.startsWith('/api/import/') ? 120 : 20),
+          ),
     );
     if (response.statusCode >= 400) {
       var message = response.body;
