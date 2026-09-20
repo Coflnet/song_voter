@@ -23,9 +23,16 @@ void main() {
 
     await state.initialize();
     if (state.party != null) await state.leave();
-    await state.search('Midnight City');
+    addTearDown(() async {
+      if (state.api.userId != null) {
+        await state.api.request('DELETE', '/api/user');
+      }
+      state.dispose();
+    });
+    await state.search('https://youtu.be/dX3k_QDnzHE');
     expect(state.results, isNotEmpty);
-    await state.favourite(state.results.first, true);
+    final selected = state.results.single;
+    await state.favourite(selected, true);
     await tester.pumpWidget(SongVoterApp(state: state));
     await tester.ensureVisible(find.text('Host a party'));
     await tester.tap(find.text('Host a party'));
@@ -72,7 +79,7 @@ void main() {
     );
     await tester.tap(find.text('Start the music'));
     await until(() => state.party?.currentSong != null);
-    expect(state.party!.currentSong!.title, 'Midnight City');
+    expect(state.party!.currentSong!.id, selected.id);
     checkQr();
     if (const bool.fromEnvironment('LIVE_PLAYBACK')) {
       final controller = tester
@@ -96,6 +103,5 @@ void main() {
     await until(() => state.party == null);
     expect(find.text('Host a party'), findsOneWidget);
     await tester.pumpWidget(const SizedBox());
-    state.dispose();
   }, timeout: const Timeout(Duration(minutes: 5)));
 }
