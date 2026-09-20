@@ -7,6 +7,7 @@ import 'package:wakelock_plus/wakelock_plus.dart';
 import 'package:youtube_player_iframe/youtube_player_iframe.dart';
 
 import 'party_state.dart';
+import 'strings.dart';
 import 'playback/playback.dart';
 import 'playback/native_adapters.dart';
 
@@ -69,7 +70,9 @@ class _HostStageState extends State<HostStage> with WidgetsBindingObserver {
                   borderRadius: BorderRadius.circular(16),
                 ),
                 child: Semantics(
-                  label: 'Scan to join at ${party.joinUrl}',
+                  label: context.german
+                      ? 'Scannen und beitreten: ${party.joinUrl}'
+                      : 'Scan to join at ${party.joinUrl}',
                   child: QrImageView(
                     data: party.joinUrl!,
                     size: 140,
@@ -78,10 +81,7 @@ class _HostStageState extends State<HostStage> with WidgetsBindingObserver {
                 ),
               ),
             const SizedBox(height: 8),
-            const Text(
-              'songvoter.party',
-              style: TextStyle(color: Color(0xffd4ff71)),
-            ),
+            Text('songvoter.party', style: TextStyle(color: Color(0xffd4ff71))),
             TextButton(
               onPressed: party.joinUrl == null
                   ? null
@@ -91,11 +91,13 @@ class _HostStageState extends State<HostStage> with WidgetsBindingObserver {
                       );
                       if (context.mounted) {
                         ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(content: Text('Invite link copied')),
+                          SnackBar(
+                            content: Text(context.tr('Invite link copied')),
+                          ),
                         );
                       }
                     },
-              child: Text(party.code ?? 'Invite expired'),
+              child: Text(party.code ?? context.tr('Invite expired')),
             ),
             if (party.joinUrl == null)
               TextButton(
@@ -106,7 +108,7 @@ class _HostStageState extends State<HostStage> with WidgetsBindingObserver {
                   );
                   await widget.state.refresh();
                 }),
-                child: const Text('Refresh invite'),
+                child: Text(context.tr('Refresh invite')),
               ),
           ],
         ),
@@ -137,7 +139,7 @@ class _HostStageState extends State<HostStage> with WidgetsBindingObserver {
                     color: const Color(0xff172b22),
                     borderRadius: BorderRadius.circular(16),
                   ),
-                  child: const Column(
+                  child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       Icon(
@@ -145,7 +147,7 @@ class _HostStageState extends State<HostStage> with WidgetsBindingObserver {
                         size: 54,
                         color: Color(0xff1ed760),
                       ),
-                      Text('Playing on Spotify'),
+                      Text(context.tr('Playing on Spotify')),
                     ],
                   ),
                 ),
@@ -158,14 +160,14 @@ class _HostStageState extends State<HostStage> with WidgetsBindingObserver {
         children: [
           const SizedBox(height: 12),
           Text(
-            party.currentSong?.title ?? 'Ready when you are',
+            party.currentSong?.title ?? context.tr('Ready when you are'),
             style: Theme.of(context).textTheme.titleLarge,
             maxLines: 2,
             overflow: TextOverflow.ellipsis,
           ),
           Text(
             party.currentSong?.artist ??
-                'Add a few favourites, then start the music.',
+                context.tr('Add a few favourites, then start the music.'),
             style: const TextStyle(color: Color(0xffaaa7bc)),
             maxLines: 2,
             overflow: TextOverflow.ellipsis,
@@ -185,19 +187,23 @@ class _HostStageState extends State<HostStage> with WidgetsBindingObserver {
                       : Icons.skip_next_rounded,
                 ),
                 label: Text(
-                  party.currentSong == null ? 'Start the music' : 'Next song',
+                  party.currentSong == null
+                      ? context.tr('Start the music')
+                      : context.tr('Next song'),
                 ),
               ),
               if (player.active != null)
                 OutlinedButton.icon(
                   onPressed: player.togglePause,
                   icon: Icon(player.paused ? Icons.play_arrow : Icons.pause),
-                  label: Text(player.paused ? 'Resume' : 'Pause'),
+                  label: Text(
+                    player.paused ? context.tr('Resume') : context.tr('Pause'),
+                  ),
                 ),
               if (party.currentSong != null && player.active == null)
                 OutlinedButton(
                   onPressed: player.retry,
-                  child: const Text('Resume this song'),
+                  child: Text(context.tr('Resume this song')),
                 ),
             ],
           ),
@@ -208,12 +214,12 @@ class _HostStageState extends State<HostStage> with WidgetsBindingObserver {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    player.error!,
+                    context.tr(player.error!),
                     style: const TextStyle(color: Color(0xffffbbac)),
                   ),
                   TextButton(
                     onPressed: player.busy ? null : player.retry,
-                    child: const Text('Retry this song'),
+                    child: Text(context.tr('Retry this song')),
                   ),
                 ],
               ),

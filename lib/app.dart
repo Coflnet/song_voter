@@ -3,12 +3,14 @@ import 'dart:async';
 import 'package:app_links/app_links.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import 'api.dart';
 import 'host_stage.dart';
 import 'models.dart';
 import 'party_state.dart';
+import 'strings.dart';
 import 'playback/native_adapters.dart';
 
 const ink = Color(0xff12101d);
@@ -21,7 +23,12 @@ class SongVoterApp extends StatelessWidget {
   final PartyState? state;
   @override
   Widget build(BuildContext context) => MaterialApp(
-    title: 'SongVoter · Everyone gets a say',
+    title: 'SongVoter',
+    localizationsDelegates: GlobalMaterialLocalizations.delegates,
+    supportedLocales: const [Locale('en'), Locale('de')],
+    locale: kIsWeb && ['en', 'de'].contains(Uri.base.queryParameters['lang'])
+        ? Locale(Uri.base.queryParameters['lang']!)
+        : null,
     debugShowCheckedModeBanner: false,
     theme: ThemeData(
       useMaterial3: true,
@@ -97,13 +104,13 @@ class _PartyHomeState extends State<PartyHome> {
   }
 
   Future<void> host() async {
-    var name = 'My house party';
+    var name = context.tr('My house party');
     var spotify = false;
     final result = await showDialog<(String, bool)>(
       context: context,
       builder: (context) => StatefulBuilder(
         builder: (context, update) => AlertDialog(
-          title: const Text('Make room for everyone’s music'),
+          title: Text(context.tr('Make room for everyone’s music')),
           content: SizedBox(
             width: 360,
             child: Column(
@@ -113,25 +120,29 @@ class _PartyHomeState extends State<PartyHome> {
                   initialValue: name,
                   onChanged: (value) => name = value,
                   maxLength: 30,
-                  decoration: const InputDecoration(labelText: 'Party name'),
+                  decoration: InputDecoration(
+                    labelText: context.tr('Party name'),
+                  ),
                 ),
-                const ListTile(
+                ListTile(
                   contentPadding: EdgeInsets.zero,
                   leading: Icon(Icons.smart_display_outlined),
                   title: Text('YouTube'),
-                  subtitle: Text('Play videos on this device'),
+                  subtitle: Text(context.tr('Play videos on this device')),
                 ),
                 SwitchListTile(
                   contentPadding: EdgeInsets.zero,
                   value: spotify,
                   onChanged: (value) => update(() => spotify = value),
-                  title: const Text('Add Spotify'),
-                  subtitle: const Text(
-                    'Uses the Spotify app and your Premium account',
+                  title: Text(context.tr('Add Spotify')),
+                  subtitle: Text(
+                    context.tr('Uses the Spotify app and your Premium account'),
                   ),
                 ),
-                const Text(
-                  'Keep this screen open and connect your speakers. Guests only need the QR code.',
+                Text(
+                  context.tr(
+                    'Keep this screen open and connect your speakers. Guests only need the QR code.',
+                  ),
                   style: TextStyle(color: muted),
                 ),
               ],
@@ -140,7 +151,7 @@ class _PartyHomeState extends State<PartyHome> {
           actions: [
             TextButton(
               onPressed: () => Navigator.pop(context),
-              child: const Text('Cancel'),
+              child: Text(context.tr('Cancel')),
             ),
             FilledButton(
               onPressed: () {
@@ -148,7 +159,7 @@ class _PartyHomeState extends State<PartyHome> {
                   Navigator.pop(context, (name.trim(), spotify));
                 }
               },
-              child: const Text('Create party'),
+              child: Text(context.tr('Create party')),
             ),
           ],
         ),
@@ -167,20 +178,28 @@ class _PartyHomeState extends State<PartyHome> {
     final yes = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
-        title: Text(state.isOwner ? 'End this party?' : 'Leave this party?'),
+        title: Text(
+          state.isOwner
+              ? context.tr('End this party?')
+              : context.tr('Leave this party?'),
+        ),
         content: Text(
           state.isOwner
-              ? 'Playback stops and the invite closes. Everyone keeps their favourites.'
-              : 'Your favourites stay saved for the next party.',
+              ? context.tr(
+                  'Playback stops and the invite closes. Everyone keeps their favourites.',
+                )
+              : context.tr('Your favourites stay saved for the next party.'),
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context, false),
-            child: const Text('Stay'),
+            child: Text(context.tr('Stay')),
           ),
           FilledButton(
             onPressed: () => Navigator.pop(context, true),
-            child: Text(state.isOwner ? 'End party' : 'Leave'),
+            child: Text(
+              state.isOwner ? context.tr('End party') : context.tr('Leave'),
+            ),
           ),
         ],
       ),
@@ -217,13 +236,16 @@ class _PartyHomeState extends State<PartyHome> {
             if (party != null)
               TextButton(
                 onPressed: state.busy ? null : leave,
-                child: Text(state.isOwner ? 'End party' : 'Leave'),
+                child: Text(
+                  state.isOwner ? context.tr('End party') : context.tr('Leave'),
+                ),
               ),
-            const Padding(
+            Padding(
               padding: EdgeInsets.only(right: 20),
               child: Tooltip(
-                message:
-                    'Your favourites stay on this device. No sign-in needed.',
+                message: context.tr(
+                  'Your favourites stay on this device. No sign-in needed.',
+                ),
                 child: Icon(Icons.account_circle_outlined, color: muted),
               ),
             ),
@@ -240,13 +262,15 @@ class _PartyHomeState extends State<PartyHome> {
                         if (state.busy) const CircularProgressIndicator(),
                         const SizedBox(height: 24),
                         Text(
-                          state.error ?? 'Getting your guest profile ready…',
+                          state.error == null
+                              ? context.tr('Getting your guest profile ready…')
+                              : context.tr(state.error!),
                           textAlign: TextAlign.center,
                         ),
                         if (!state.busy)
                           FilledButton(
                             onPressed: () => state.initialize(initialInvite),
-                            child: const Text('Try again'),
+                            child: Text(context.tr('Try again')),
                           ),
                       ],
                     ),
@@ -273,9 +297,9 @@ class _PartyHomeState extends State<PartyHome> {
                               children: [
                                 const Icon(Icons.info_outline),
                                 const SizedBox(width: 12),
-                                Expanded(child: Text(state.error!)),
+                                Expanded(child: Text(context.tr(state.error!))),
                                 IconButton(
-                                  tooltip: 'Dismiss',
+                                  tooltip: context.tr('Dismiss'),
                                   onPressed: () {
                                     state.error = null;
                                     state.changed();
@@ -320,7 +344,11 @@ class _PartyHomeState extends State<PartyHome> {
                                       Expanded(
                                         child: Text(
                                           party == null
-                                              ? 'GOOD MUSIC. GREAT COMPANY.'
+                                              ? context.tr(
+                                                  'GOOD MUSIC. GREAT COMPANY.',
+                                                )
+                                              : context.german
+                                              ? 'LIVE-PARTY · ${party.members} ${party.members == 1 ? 'PERSON' : 'PERSONEN'}'
                                               : 'LIVE PARTY · ${party.members} ${party.members == 1 ? 'PERSON' : 'PEOPLE'}',
                                           style: const TextStyle(
                                             color: lime,
@@ -335,7 +363,9 @@ class _PartyHomeState extends State<PartyHome> {
                                   const SizedBox(height: 14),
                                   Text(
                                     party?.name ??
-                                        'Your favourites.\nEveryone’s party.',
+                                        context.tr(
+                                          'Your favourites.\nEveryone’s party.',
+                                        ),
                                     style: TextStyle(
                                       fontSize:
                                           MediaQuery.sizeOf(context).width < 500
@@ -349,8 +379,12 @@ class _PartyHomeState extends State<PartyHome> {
                                   const SizedBox(height: 16),
                                   Text(
                                     party == null
-                                        ? 'Bring the songs you love. Let the room choose what’s next.'
-                                        : 'Add a song. Heart your favourites. We’ll take care of the queue.',
+                                        ? context.tr(
+                                            'Bring the songs you love. Let the room choose what’s next.',
+                                          )
+                                        : context.tr(
+                                            'Add a song. Heart your favourites. We’ll take care of the queue.',
+                                          ),
                                     style: const TextStyle(
                                       color: muted,
                                       fontSize: 17,
@@ -370,16 +404,18 @@ class _PartyHomeState extends State<PartyHome> {
                                       crossAxisAlignment:
                                           CrossAxisAlignment.stretch,
                                       children: [
-                                        const Text(
-                                          'Got an invite?',
+                                        Text(
+                                          context.tr('Got an invite?'),
                                           style: TextStyle(
                                             fontSize: 21,
                                             fontWeight: FontWeight.bold,
                                           ),
                                         ),
                                         const SizedBox(height: 8),
-                                        const Text(
-                                          'Scan the host’s QR or enter the party code.',
+                                        Text(
+                                          context.tr(
+                                            'Scan the host’s QR or enter the party code.',
+                                          ),
                                           style: TextStyle(color: muted),
                                         ),
                                         const SizedBox(height: 16),
@@ -389,11 +425,12 @@ class _PartyHomeState extends State<PartyHome> {
                                               child: TextField(
                                                 controller: code,
                                                 autocorrect: false,
-                                                decoration:
-                                                    const InputDecoration(
-                                                      labelText: 'Party code or invite link',
-                                                      fillColor: ink,
-                                                    ),
+                                                decoration: InputDecoration(
+                                                  labelText: context.tr(
+                                                    'Party code or invite link',
+                                                  ),
+                                                  fillColor: ink,
+                                                ),
                                                 onSubmitted: (_) =>
                                                     state.join(code.text),
                                               ),
@@ -403,7 +440,7 @@ class _PartyHomeState extends State<PartyHome> {
                                               onPressed: state.busy
                                                   ? null
                                                   : () => state.join(code.text),
-                                              child: const Text('Join'),
+                                              child: Text(context.tr('Join')),
                                             ),
                                           ],
                                         ),
@@ -417,7 +454,7 @@ class _PartyHomeState extends State<PartyHome> {
                                       icon: const Icon(
                                         Icons.speaker_group_outlined,
                                       ),
-                                      label: const Text('Host a party'),
+                                      label: Text(context.tr('Host a party')),
                                     )
                                   else
                                     OutlinedButton.icon(
@@ -428,8 +465,8 @@ class _PartyHomeState extends State<PartyHome> {
                                         mode: LaunchMode.externalApplication,
                                       ),
                                       icon: const Icon(Icons.phone_android),
-                                      label: const Text(
-                                        'Get the Android host app',
+                                      label: Text(
+                                        context.tr('Get the Android host app'),
                                       ),
                                     ),
                                   const SizedBox(height: 32),
@@ -460,8 +497,8 @@ class _PartyHomeState extends State<PartyHome> {
                                             crossAxisAlignment:
                                                 CrossAxisAlignment.start,
                                             children: [
-                                              const Text(
-                                                'NOW PLAYING',
+                                              Text(
+                                                context.tr('NOW PLAYING'),
                                                 style: TextStyle(
                                                   color: lime,
                                                   fontSize: 11,
@@ -491,11 +528,13 @@ class _PartyHomeState extends State<PartyHome> {
                                   controller: search,
                                   textInputAction: TextInputAction.search,
                                   decoration: InputDecoration(
-                                    labelText: 'Find a song or paste a link',
-                                    hintText: 'YouTube or Spotify',
+                                    labelText: context.tr(
+                                      'Find a song or paste a link',
+                                    ),
+                                    hintText: context.tr('YouTube or Spotify'),
                                     prefixIcon: const Icon(Icons.search),
                                     suffixIcon: IconButton(
-                                      tooltip: 'Search songs',
+                                      tooltip: context.tr('Search songs'),
                                       onPressed: state.searching
                                           ? null
                                           : () => state.search(search.text),
@@ -507,7 +546,7 @@ class _PartyHomeState extends State<PartyHome> {
                                   onSubmitted: state.search,
                                 ),
                                 if (state.searching)
-                                  const Padding(
+                                  Padding(
                                     padding: EdgeInsets.all(16),
                                     child: LinearProgressIndicator(),
                                   ),
@@ -515,7 +554,7 @@ class _PartyHomeState extends State<PartyHome> {
                                   Padding(
                                     padding: const EdgeInsets.only(top: 12),
                                     child: Text(
-                                      warning,
+                                      context.tr(warning),
                                       style: const TextStyle(color: muted),
                                     ),
                                   ),
@@ -523,9 +562,9 @@ class _PartyHomeState extends State<PartyHome> {
                                   const SizedBox(height: 22),
                                   Row(
                                     children: [
-                                      const Expanded(
+                                      Expanded(
                                         child: Text(
-                                          'Search results',
+                                          context.tr('Search results'),
                                           style: TextStyle(
                                             fontSize: 20,
                                             fontWeight: FontWeight.bold,
@@ -538,7 +577,7 @@ class _PartyHomeState extends State<PartyHome> {
                                           search.clear();
                                           state.changed();
                                         },
-                                        child: const Text('Clear'),
+                                        child: Text(context.tr('Clear')),
                                       ),
                                     ],
                                   ),
@@ -553,14 +592,18 @@ class _PartyHomeState extends State<PartyHome> {
                                         showSelectedIcon: false,
                                         segments: [
                                           if (party != null)
-                                            const ButtonSegment(
+                                            ButtonSegment(
                                               value: 0,
-                                              label: Text('Up next'),
+                                              label: Text(
+                                                context.tr('Up next'),
+                                              ),
                                               icon: Icon(Icons.queue_music),
                                             ),
-                                          const ButtonSegment(
+                                          ButtonSegment(
                                             value: 1,
-                                            label: Text('Your favourites'),
+                                            label: Text(
+                                              context.tr('Your favourites'),
+                                            ),
                                             icon: Icon(Icons.favorite_outline),
                                           ),
                                         ],
@@ -575,8 +618,10 @@ class _PartyHomeState extends State<PartyHome> {
                                 if (party != null && tab == 0) ...[
                                   if (party.queue.isEmpty)
                                     empty(
-                                      'The dance floor is yours.',
-                                      'Add the first song and get everyone moving.',
+                                      context.tr('The dance floor is yours.'),
+                                      context.tr(
+                                        'Add the first song and get everyone moving.',
+                                      ),
                                     ),
                                   for (var i = 0; i < party.queue.length; i++)
                                     songRow(
@@ -587,15 +632,21 @@ class _PartyHomeState extends State<PartyHome> {
                                 ] else ...[
                                   if (state.favourites.isEmpty)
                                     empty(
-                                      'Every party starts with a favourite.',
-                                      'Search for a song above. Your picks will follow you to the next party.',
+                                      context.tr(
+                                        'Every party starts with a favourite.',
+                                      ),
+                                      context.tr(
+                                        'Search for a song above. Your picks will follow you to the next party.',
+                                      ),
                                     ),
                                   for (final song in state.favourites)
                                     songRow(song),
                                 ],
                                 const SizedBox(height: 22),
-                                const Text(
-                                  'Free to join. Free to add. Everyone gets a say.',
+                                Text(
+                                  context.tr(
+                                    'Free to join. Free to add. Everyone gets a say.',
+                                  ),
                                   textAlign: TextAlign.center,
                                   style: TextStyle(color: muted, fontSize: 12),
                                 ),
@@ -684,12 +735,20 @@ class _PartyHomeState extends State<PartyHome> {
             style: const TextStyle(fontWeight: FontWeight.w600),
           ),
           subtitle: Text(
-            '${song.artist}\n${song.sources.map((s) => s.platform == 'youtube' ? 'YouTube' : 'Spotify').join(' · ')}${entry != null && !entry.playable ? ' · Waiting for host to connect' : ''}',
+            '${song.artist}\n${song.sources.map((s) => s.platform == 'youtube' ? 'YouTube' : 'Spotify').join(' · ')}${entry != null && !entry.playable
+                ? context.german
+                      ? ' · Wartet auf die Verbindung des Hosts'
+                      : ' · Waiting for host to connect'
+                : ''}',
             style: const TextStyle(color: muted, fontSize: 12, height: 1.5),
           ),
           trailing: IconButton.filledTonal(
             tooltip: favourite
-                ? 'Remove ${song.title} from favourites'
+                ? context.german
+                      ? '${song.title} aus Favoriten entfernen'
+                      : 'Remove ${song.title} from favourites'
+                : context.german
+                ? '${song.title} zu Favoriten hinzufügen'
                 : 'Add ${song.title} to favourites',
             onPressed: state.busy
                 ? null

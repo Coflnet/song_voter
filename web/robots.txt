@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow: /api/
+Disallow: /app
+Disallow: /join/
+Sitemap: https://songvoter.party/sitemap.xml

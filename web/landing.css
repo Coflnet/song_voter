@@ -162,3 +162,5 @@ footer .brand{margin-right:auto}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}
 .button{transition:none}
 }
+
+.guide{max-width:850px;padding-top:35px;padding-bottom:80px}.guide h1{font-size:clamp(38px,6vw,64px)}.guide .intro{max-width:650px}.guide section{margin:45px 0}.guide h2{font-size:27px}.guide section p{line-height:1.85;color:#bdb3ce;font-size:17px}.language{color:#d4ff71;font-size:12px}.nav nav{gap:20px}@media(max-width:390px){.nav nav{gap:10px}.nav-join span{margin-left:4px}.brand{font-size:21px}}

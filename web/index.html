@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <base href="$FLUTTER_BASE_HREF">
+  <base href="/">
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#12101d">
@@ -10,20 +10,24 @@
   <meta property="og:description" content="Your friends. Their favourites. One shared dance floor. Join in your browser or host with the Android app.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://songvoter.party/">
+  <link rel="canonical" href="https://songvoter.party/">
+  <link rel="alternate" hreflang="en" href="https://songvoter.party/">
+  <link rel="alternate" hreflang="de" href="https://songvoter.party/de/">
+  <link rel="alternate" hreflang="x-default" href="https://songvoter.party/">
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-title" content="SongVoter">
   <link rel="icon" type="image/svg+xml" href="mark.svg">
   <link rel="apple-touch-icon" href="icons/Icon-192.png">
   <link rel="manifest" href="manifest.json">
   <title>SongVoter · Good music is a group effort.</title>
-  <script>if (!['/', '/index.html'].includes(location.pathname)) document.documentElement.dataset.view = 'app';</script>
+<script defer src="/site.js"></script>
   <link rel="stylesheet" href="landing.css">
 </head>
 <body>
 <div id="landing">
   <header class="nav wrap">
     <a class="brand" href="/" aria-label="SongVoter home"><img src="mark.svg" alt="" width="30" height="30">songvoter<span class="brand-dot">.</span></a>
-    <nav aria-label="Main navigation"><a class="how-link" href="#how-it-works">How it works</a><a class="nav-join" href="#join">Join a party <span aria-hidden="true">↗</span></a></nav>
+    <nav aria-label="Main navigation"><a class="how-link" href="/how-it-works/">How it works</a><a class="nav-join" href="#join">Join a party <span aria-hidden="true">↗</span></a><a class="language" href="/de/?lang=de" lang="de" aria-label="Deutsch">DE</a></nav>
   </header>
   <main>
     <section class="hero wrap" aria-labelledby="hero-title">
@@ -53,15 +57,16 @@
       <div class="step-grid">
         <article><span class="step-number">01 / HOST</span><h3>One phone. Your speakers.</h3><p>Open the Android app, create a party, and connect your speakers. Play YouTube videos or connect your Spotify account.</p></article>
         <article><span class="step-number">02 / JOIN</span><h3>Scan. You’re in.</h3><p>The host’s QR stays beside the music. Guests scan it and join in their browser. No downloads or sign-in to slow things down.</p></article>
-        <article><span class="step-number">03 / PLAY</span><h3>Heart it. Hear it.</h3><p>Search or paste a song link. Your favourites help shape what plays next, while shared voting weight keeps one long list from taking over.</p></article>
+        <article><span class="step-number">03 / PLAY</span><h3>Heart it. Hear it.</h3><p>Import a favourite playlist from YouTube or Spotify, or choose your saved favourites. Your picks shape what plays next, while shared voting weight keeps one long list from taking over.</p></article>
       </div>
+      <p><a class="button secondary" href="/how-it-works/">How SongVoter works →</a></p>
     </section>
     <section class="join-section wrap" id="join" aria-labelledby="join-title">
       <div><p class="eyebrow">THERE’S ROOM FOR YOUR MUSIC</p><h2 id="join-title">Already at the party?</h2><p>Scan the QR on the host’s screen, or drop your invite here.</p></div>
       <form id="join-form"><label for="invite">Party code or invite link</label><div class="join-fields"><input id="invite" name="invite" required autocomplete="off" spellcheck="false" placeholder="e.g. a1b2c3d4e5f6" aria-describedby="join-help"><button class="button primary" type="submit">Let me in <span aria-hidden="true">↗</span></button></div><p id="join-help">No invite yet? <a href="/app">Save your favourites for later →</a></p></form>
     </section>
     <section class="details wrap" aria-labelledby="details-title"><h2 id="details-title">A few things before<br>the first track.</h2><div class="faq">
-      <details><summary>Is SongVoter free?</summary><p>Yes. Hosting, joining, adding songs, and voting are free. There are no paid boosts in this version.</p></details>
+      <details><summary>Is SongVoter free?</summary><p>Yes. SongVoter is free to use.</p></details>
       <details><summary>Does everyone need an app?</summary><p>Only the host needs the Android app. Guests join with any modern phone browser. Keep the host app open so playback and the party QR stay visible.</p></details>
       <details><summary>How do YouTube and Spotify work?</summary><p>The host app plays YouTube videos on screen. Spotify playback uses the installed Spotify app and the host’s Premium account. Guests can add songs from either platform; the queue plays the sources the host has enabled.</p></details>
       <details><summary>Will I keep my favourites?</summary><p>Yes. SongVoter remembers your anonymous profile on this browser or device. Your favourites come with you when you join another party. Clearing browser data or changing devices starts a new profile.</p></details>
@@ -71,25 +76,7 @@
   </main>
   <footer class="wrap"><a class="brand" href="/"><img src="mark.svg" alt="" width="25" height="25">songvoter.</a><span>Made for the music between us.</span><a href="https://coflnet.com/imprint">Imprint</a><a href="https://coflnet.com/privacy">Privacy</a></footer>
 </div>
-<script>
-if (document.documentElement.dataset.view === 'app') {
-  document.getElementById('landing').remove();
-  const script = document.createElement('script');
-  script.src = 'flutter_bootstrap.js';
-  script.async = true;
-  document.body.append(script);
-} else {
-  const input = document.getElementById('invite');
-  input.addEventListener('input', () => input.setCustomValidity(''));
-  document.getElementById('join-form').addEventListener('submit', event => {
-    event.preventDefault();
-    const value = input.value.trim();
-    const match = value.match(/^(?:https:\/\/songvoter\.party\/join\/)?([a-f0-9]{12})\/?$/i);
-    if (match) location.assign('/join/' + match[1].toLowerCase());
-    else { input.setCustomValidity('Enter the 12-character party code or a songvoter.party invite link.'); input.reportValidity(); }
-  });
-}
-</script>
+
 <noscript><p class="noscript">The party app needs JavaScript to join and save your favourites. You can still <a href="/downloads/songvoter.apk">download the Android host app</a>.</p></noscript>
 </body>
 </html>
