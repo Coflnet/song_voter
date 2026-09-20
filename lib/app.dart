@@ -150,8 +150,6 @@ class _PartyHomeState extends State<PartyHome> {
   );
 
   Widget importActions(bool hosting) => Container(
-    // Recreate action semantics when the saved-list button changes the layout.
-    key: ValueKey(state.favourites.isNotEmpty),
     padding: EdgeInsets.all(hosting ? 8 : 20),
     margin: const EdgeInsets.only(bottom: 24),
     decoration: BoxDecoration(

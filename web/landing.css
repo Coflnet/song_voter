@@ -102,7 +102,8 @@ footer .brand{font-size:21px;color:#f5f3fa}
 footer>span{flex:1;margin-left:10px}
 footer>a:not(.brand){text-decoration:underline;text-underline-offset:4px}
 .noscript{text-align:center;padding:20px}
-html[data-view=app],html[data-view=app] body{height:100%;overflow:hidden}
+/* Flutter scrolls its own views; browser scrolling would offset its accessibility controls. */
+html[data-view=app],html[data-view=app] body{height:100%;overflow:clip!important;scroll-behavior:auto}
 html[data-view=app] #landing{display:none}
 
 @media(min-width:1300px){.join-section{max-width:1160px}
