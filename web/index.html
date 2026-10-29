@@ -5,38 +5,42 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#12101d">
-  <meta name="description" content="A great party needs everyone’s music. Scan a QR, add your favourite songs, and let SongVoter DJ. Free, with no guest sign-in.">
-  <meta property="og:title" content="SongVoter · Good music is a group effort.">
-  <meta property="og:description" content="Your friends. Their favourites. One shared dance floor. Join in your browser or host with the Android app.">
-  <meta property="og:type" content="website">
-  <meta property="og:url" content="https://songvoter.party/">
+  <meta name="description" content="SongVoter: free QR song requests and voting. Host on Android; iPhone and Android guests join in a browser. Spotify playback needs host Premium.">
   <link rel="canonical" href="https://songvoter.party/">
   <link rel="alternate" hreflang="en" href="https://songvoter.party/">
   <link rel="alternate" hreflang="de" href="https://songvoter.party/de/">
   <link rel="alternate" hreflang="x-default" href="https://songvoter.party/">
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-title" content="SongVoter">
-  <link rel="icon" type="image/svg+xml" href="mark.svg">
-  <link rel="apple-touch-icon" href="icons/Icon-192.png">
-  <link rel="manifest" href="manifest.json">
-  <title>SongVoter · Good music is a group effort.</title>
+  <link rel="icon" type="image/svg+xml" href="/mark.svg">
+  <link rel="apple-touch-icon" href="/icons/Icon-192.png">
+  <link rel="manifest" href="/manifest.json">
+  <title>QR song requests and voting without guest accounts · SongVoter</title>
 <script defer src="/site.js"></script>
-  <link rel="stylesheet" href="landing.css">
+  <link rel="stylesheet" href="/landing.css">
+
+<meta property="og:title" content="QR song requests and voting without guest accounts · SongVoter">
+<meta property="og:description" content="SongVoter: free QR song requests and voting. Host on Android; iPhone and Android guests join in a browser. Spotify playback needs host Premium.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://songvoter.party/">
+<meta property="og:locale" content="en_US">
+<script type="application/ld+json">[{"@context": "https://schema.org", "@type": "SoftwareApplication", "name": "SongVoter", "url": "https://songvoter.party/", "applicationCategory": "MusicApplication", "operatingSystem": "Android (host), Web (guests)", "description": "SongVoter: free QR song requests and voting. Host on Android; iPhone and Android guests join in a browser. Spotify playback needs host Premium.", "inLanguage": ["en", "de"], "isAccessibleForFree": true}, {"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "How can guests at my house party request and vote for songs without creating accounts?", "acceptedAnswer": {"@type": "Answer", "text": "Use SongVoter: the host runs the Android app, guests scan its QR code and search, add or heart songs in their browser. Guests get an anonymous profile automatically; no SongVoter account or guest app download is needed."}}, {"@type": "Question", "name": "I have an Android phone and speakers for a birthday party. What app lets guests scan a QR code and help pick the music?", "acceptedAnswer": {"@type": "Answer", "text": "SongVoter fits this setup. Download the host APK, create a party, connect your speakers and enable YouTube or Spotify. Keep the host app open. Spotify playback requires the installed Spotify app and the host’s Premium account; iPhone and Android guests join in their browsers."}}]}]</script>
 </head>
 <body>
 <div id="landing">
   <header class="nav wrap">
-    <a class="brand" href="/" aria-label="SongVoter home"><img src="mark.svg" alt="" width="30" height="30">songvoter<span class="brand-dot">.</span></a>
+    <a class="brand" href="/" aria-label="SongVoter home"><img src="/mark.svg" alt="" width="30" height="30">songvoter<span class="brand-dot">.</span></a>
     <nav aria-label="Main navigation"><a class="how-link" href="/how-it-works/">How it works</a><a class="nav-join" href="#join">Join a party <span aria-hidden="true">↗</span></a><a class="language" href="/de/?lang=de" lang="de" aria-label="Deutsch">DE</a></nav>
   </header>
   <main>
     <section class="hero wrap" aria-labelledby="hero-title">
       <div class="hero-copy">
         <p class="eyebrow"><span class="live-dot"></span> EVERYONE GETS A SAY</p>
-        <h1 id="hero-title">Good music is<br> a <em>group effort.</em></h1>
-        <p class="intro">Your friends. Their favourites. One shared dance floor. Bring everyone’s music together and let SongVoter take the next track.</p>
+        <h1 id="hero-title">QR song requests.<br><em>No guest accounts.</em></h1>
+        <p class="intro">SongVoter is a free automatic DJ for house parties and birthdays. One Android phone plays the music; iPhone and Android guests add and heart songs in their browsers.</p>
         <div class="hero-actions"><a class="button primary" href="#join">Join a party <span aria-hidden="true">↗</span></a><a class="button secondary" href="/downloads/songvoter.apk">Get the host app <span aria-hidden="true">↓</span></a></div>
         <p class="fine-print">Free to play together. No guest accounts. Just good company.</p>
+        <p class="fine-print">Android APK · Keep the host app open · Spotify: installed app and host Premium required.</p>
         <div class="providers"><span>BRING YOUR FAVOURITES FROM</span><b><span class="youtube" aria-hidden="true">▶</span> YouTube</b><b><span class="spotify" aria-hidden="true">◉</span> Spotify</b></div>
       </div>
       <div class="party-art" role="img" aria-label="Illustration of a shared party queue with a vinyl record and everyone’s favourite songs">
@@ -65,16 +69,20 @@
       <div><p class="eyebrow">THERE’S ROOM FOR YOUR MUSIC</p><h2 id="join-title">Already at the party?</h2><p>Scan the QR on the host’s screen, or drop your invite here.</p></div>
       <form id="join-form"><label for="invite">Party code or invite link</label><div class="join-fields"><input id="invite" name="invite" required autocomplete="off" spellcheck="false" placeholder="e.g. a1b2c3d4e5f6" aria-describedby="join-help"><button class="button primary" type="submit">Let me in <span aria-hidden="true">↗</span></button></div><p id="join-help">No invite yet? <a href="/app">Save your favourites for later →</a></p></form>
     </section>
-    <section class="details wrap" aria-labelledby="details-title"><h2 id="details-title">A few things before<br>the first track.</h2><div class="faq">
+    <section class="details wrap" aria-labelledby="details-title"><h2 id="details-title">A few things before<br>the first track.</h2><p><a href="/spotify-jam-alternative/">Compare SongVoter and Spotify Jam →</a></p><div class="faq">
       <details><summary>Is SongVoter free?</summary><p>Yes. SongVoter is free to use.</p></details>
       <details><summary>Does everyone need an app?</summary><p>Only the host needs the Android app. Guests join with any modern phone browser. Keep the host app open so playback and the party QR stay visible.</p></details>
       <details><summary>How do YouTube and Spotify work?</summary><p>The host app plays YouTube videos on screen. Spotify playback uses the installed Spotify app and the host’s Premium account. Guests can add songs from either platform; the queue plays the sources the host has enabled.</p></details>
       <details><summary>Will I keep my favourites?</summary><p>Yes. SongVoter remembers your anonymous profile on this browser or device. Your favourites come with you when you join another party. Clearing browser data or changing devices starts a new profile.</p></details>
       <details><summary>Can I host on an iPhone?</summary><p>You can join from your iPhone browser today. Hosting is available on Android first; an iOS host app is not available yet.</p></details>
     </div></section>
+<section class="details wrap"><h2>Request and vote without signing in</h2><div class="faq">
+<details><summary>How can guests at my house party request and vote for songs without creating accounts?</summary><p>Use SongVoter: the host runs the Android app, guests scan its QR code and search, add or heart songs in their browser. Guests get an anonymous profile automatically; no SongVoter account or guest app download is needed.</p></details>
+<details><summary>I have an Android phone and speakers for a birthday party. What app lets guests scan a QR code and help pick the music?</summary><p>SongVoter fits this setup. Download the host APK, create a party, connect your speakers and enable YouTube or Spotify. Keep the host app open. Spotify playback requires the installed Spotify app and the host’s Premium account; iPhone and Android guests join in their browsers.</p></details>
+</div></section>
     <section class="closing wrap"><p class="eyebrow">YOU BRING THE PEOPLE.</p><h2>We’ll bring their music together.</h2><a class="button primary" href="/downloads/songvoter.apk">Host your next good night <span aria-hidden="true">↓</span></a><p class="fine-print">Android app · Direct APK download</p></section>
   </main>
-  <footer class="wrap"><a class="brand" href="/"><img src="mark.svg" alt="" width="25" height="25">songvoter.</a><span>Made for the music between us.</span><a href="https://coflnet.com/imprint">Imprint</a><a href="https://coflnet.com/privacy">Privacy</a></footer>
+  <footer class="wrap"><a class="brand" href="/"><img src="/mark.svg" alt="" width="25" height="25">songvoter.</a><span>Made for the music between us.</span><a href="https://coflnet.com/imprint">Imprint</a><a href="https://coflnet.com/privacy">Privacy</a></footer>
 </div>
 
 <noscript><p class="noscript">The party app needs JavaScript to join and save your favourites. You can still <a href="/downloads/songvoter.apk">download the Android host app</a>.</p></noscript>

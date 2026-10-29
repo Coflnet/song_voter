@@ -125,7 +125,7 @@ html[data-view=app] #landing{display:none}
 .brand{font-size:24px}
 .how-link{display:none}
 .nav-join{padding:10px 14px;font-size:12px}
-.hero{grid-template-columns:1fr;padding-top:34px;padding-bottom:35px;min-height:0;overflow:hidden}
+.hero{grid-template-columns:minmax(0,1fr);padding-top:34px;padding-bottom:35px;min-height:0;overflow:hidden}
 .hero h1{font-size:clamp(43px,8.8vw,62px);letter-spacing:-2.6px}
 .intro{font-size:16px;max-width:480px}
 .hero-actions{margin-top:26px;gap:10px}
@@ -165,3 +165,13 @@ footer .brand{margin-right:auto}
 }
 
 .guide{max-width:850px;padding-top:35px;padding-bottom:80px}.guide h1{font-size:clamp(38px,6vw,64px)}.guide .intro{max-width:650px}.guide section{margin:45px 0}.guide h2{font-size:27px}.guide section p{line-height:1.85;color:#bdb3ce;font-size:17px}.language{color:#d4ff71;font-size:12px}.nav nav{gap:20px}@media(max-width:390px){.nav nav{gap:10px}.nav-join span{margin-left:4px}.brand{font-size:21px}}
+
+.comparison-scroll{overflow-x:auto;margin:24px 0}
+.comparison{width:100%;border-collapse:collapse;font-size:16px;line-height:1.7}
+.comparison caption{text-align:left;color:#bdb3ce;margin-bottom:16px}
+.comparison th,.comparison td{text-align:left;vertical-align:top;padding:16px;border-bottom:1px solid #494255;min-width:180px}
+.comparison thead th{color:#d4ff71}
+.comparison td{color:#bdb3ce}
+.comparison-scroll:focus-visible{outline:2px solid #d4ff71;outline-offset:4px}
+
+.hero h1,.guide h1{overflow-wrap:anywhere}

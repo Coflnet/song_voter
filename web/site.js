@@ -1,4 +1,4 @@
-const app = !['/', '/index.html', '/de/', '/de/index.html', '/how-it-works/', '/de/so-funktionierts/'].includes(location.pathname);
+const app = !['/', '/index.html', '/de/', '/de/index.html', '/how-it-works/', '/de/so-funktionierts/', '/spotify-jam-alternative/', '/spotify-jam-alternative/index.html', '/de/spotify-jam-alternative/', '/de/spotify-jam-alternative/index.html'].includes(location.pathname);
 const requested = new URLSearchParams(location.search).get('lang');
 let language = requested;
 try {
