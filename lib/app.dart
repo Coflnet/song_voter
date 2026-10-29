@@ -248,6 +248,7 @@ class _PartyHomeState extends State<PartyHome> {
       builder: (context) => StatefulBuilder(
         builder: (context, update) => AlertDialog(
           title: Text(context.tr('Make room for everyone’s music')),
+          scrollable: true,
           content: SizedBox(
             width: 360,
             child: Column(
@@ -255,10 +256,13 @@ class _PartyHomeState extends State<PartyHome> {
               children: [
                 TextFormField(
                   initialValue: name,
-                  onChanged: (value) => name = value,
+                  onChanged: (value) => update(() => name = value),
                   maxLength: 30,
                   decoration: InputDecoration(
                     labelText: context.tr('Party name'),
+                    errorText: name.trim().isEmpty
+                        ? context.tr('Enter a party name.')
+                        : null,
                   ),
                 ),
                 ListTile(
@@ -291,11 +295,9 @@ class _PartyHomeState extends State<PartyHome> {
               child: Text(context.tr('Cancel')),
             ),
             FilledButton(
-              onPressed: () {
-                if (name.trim().isNotEmpty) {
-                  Navigator.pop(context, (name.trim(), spotify));
-                }
-              },
+              onPressed: name.trim().isEmpty
+                  ? null
+                  : () => Navigator.pop(context, (name.trim(), spotify)),
               child: Text(context.tr('Create party')),
             ),
           ],
@@ -661,7 +663,7 @@ class _PartyHomeState extends State<PartyHome> {
                                       ],
                                     ),
                                   ),
-                                importActions(hosting),
+                                if (party == null) importActions(hosting),
                                 TextField(
                                   controller: search,
                                   textInputAction: TextInputAction.search,
@@ -780,6 +782,7 @@ class _PartyHomeState extends State<PartyHome> {
                                   for (final song in state.favourites)
                                     songRow(song),
                                 ],
+                                if (party != null) importActions(hosting),
                                 const SizedBox(height: 22),
                                 Text(
                                   context.tr(
@@ -826,9 +829,27 @@ class _PartyHomeState extends State<PartyHome> {
     ),
   );
 
+  Future<void> toggleSong(Song song, bool selected, bool queued) async {
+    final inParty = state.party != null;
+    await state.favourite(song, !selected);
+    if (!mounted || state.error != null || !inParty) return;
+    final message = selected
+        ? 'Vote removed'
+        : queued
+        ? 'Vote added'
+        : 'Song requested';
+    ScaffoldMessenger.of(context)
+      ..hideCurrentSnackBar()
+      ..showSnackBar(SnackBar(content: Text(context.tr(message))));
+  }
+
   Widget songRow(Song song, {QueueEntry? entry, int? position}) {
-    final favourite =
-        entry?.favourite ?? state.favourites.any((s) => s.id == song.id);
+    final queueEntry =
+        entry ??
+        state.party?.queue.where((e) => e.song.id == song.id).firstOrNull;
+    final favourite = state.party != null
+        ? queueEntry?.favourite ?? false
+        : state.favourites.any((s) => s.id == song.id);
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 6),
       child: Container(
@@ -881,7 +902,15 @@ class _PartyHomeState extends State<PartyHome> {
             style: const TextStyle(color: muted, fontSize: 12, height: 1.5),
           ),
           trailing: IconButton.filledTonal(
-            tooltip: favourite
+            tooltip: state.party != null
+                ? context.tr(
+                    favourite
+                        ? 'Remove vote'
+                        : queueEntry == null
+                        ? 'Request song'
+                        : 'Vote for song',
+                  )
+                : favourite
                 ? context.german
                       ? '${song.title} aus Favoriten entfernen'
                       : 'Remove ${song.title} from favourites'
@@ -890,7 +919,7 @@ class _PartyHomeState extends State<PartyHome> {
                 : 'Add ${song.title} to favourites',
             onPressed: state.busy
                 ? null
-                : () => state.favourite(song, !favourite),
+                : () => toggleSong(song, favourite, queueEntry != null),
             icon: Icon(
               favourite ? Icons.favorite : Icons.favorite_border,
               color: favourite ? lime : null,

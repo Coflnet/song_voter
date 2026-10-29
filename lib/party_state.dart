@@ -131,7 +131,14 @@ class PartyState extends ChangeNotifier {
   });
 
   Future<void> search(String term) async {
-    if (term.trim().length < 2 || searching) return;
+    if (searching) return;
+    if (term.trim().length < 2) {
+      results = [];
+      error = null;
+      searchWarnings = ['Enter at least two characters to search.'];
+      changed();
+      return;
+    }
     searching = true;
     error = null;
     searchWarnings = [];
