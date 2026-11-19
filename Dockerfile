@@ -14,7 +14,7 @@ RUN flutter analyze && flutter test
 FROM test AS publish
 RUN flutter build web --release --no-pub && sh tool/fingerprint-web.sh
 
-FROM nginxinc/nginx-unprivileged:stable-alpine AS final
+FROM nginx/nginx-unprivileged:1.30.7-alpine@sha256:0c53a1f2890c3526bfd201440f0fd3970e5b78f80630f58284aad0d34b5ec7bd AS final
 COPY nginx.conf /etc/nginx/conf.d/default.conf
 COPY --from=publish /app/build/web /usr/share/nginx/html
 EXPOSE 3000
