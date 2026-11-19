@@ -7,6 +7,15 @@ extension SongVoterStrings on BuildContext {
 }
 
 const _german = <String, String>{
+  'Enter a party name.': 'Gib einen Namen für die Party ein.',
+  'Enter at least two characters to search.':
+      'Gib mindestens zwei Zeichen für die Suche ein.',
+  'Remove vote': 'Stimme zurücknehmen',
+  'Request song': 'Song wünschen',
+  'Vote for song': 'Für Song stimmen',
+  'Vote removed': 'Stimme zurückgenommen',
+  'Vote added': 'Stimme hinzugefügt',
+  'Song requested': 'Song gewünscht',
   "Liked songs": "Lieblingssongs",
   "More lists": "Weitere Listen",
   "Use a playlist link instead": "Stattdessen einen Playlistlink verwenden",
